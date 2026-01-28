@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Main/">
+    <Project Path="Main/Dictionary.Shared/Dictionary.Shared.csproj" />
+    <Project Path="Main/Dictionary.TheApp/Dictionary.TheApp.csproj">
+      <Deploy />
+    </Project>
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+  </Folder>
+</Solution>
