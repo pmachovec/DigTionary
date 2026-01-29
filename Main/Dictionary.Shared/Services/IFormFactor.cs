@@ -1,8 +1,7 @@
-namespace Dictionary.Shared.Services
+namespace Dictionary.Shared.Services;
+
+public interface IFormFactor
 {
-    public interface IFormFactor
-    {
-        public string GetFormFactor();
-        public string GetPlatform();
-    }
+    public string GetFormFactor();
+    public string GetPlatform();
 }
