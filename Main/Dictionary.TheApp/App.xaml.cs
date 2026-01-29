@@ -2,13 +2,7 @@ namespace Dictionary.TheApp;
 
 public partial class App : Application
 {
-    public App()
-    {
-        InitializeComponent();
-    }
+    public App() => InitializeComponent();
 
-    protected override Window CreateWindow(IActivationState? activationState)
-    {
-        return new Window(new MainPage()) { Title = "Dictionary" };
-    }
+    protected override Window CreateWindow(IActivationState? activationState) => new(new MainPage()) { Title = "Dictionary" };
 }

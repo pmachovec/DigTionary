@@ -1,5 +1,3 @@
-using Dictionary.Shared.Services;
-using Dictionary.TheApp.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Dictionary.TheApp;
@@ -11,13 +9,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
-            .ConfigureFonts(fonts =>
-            {
-                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-            });
-
-        // Add device-specific services used by the Dictionary.Shared project
-        builder.Services.AddSingleton<IFormFactor, FormFactor>();
+            .ConfigureFonts(fonts => fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular"));
 
         builder.Services.AddMauiBlazorWebView();
 

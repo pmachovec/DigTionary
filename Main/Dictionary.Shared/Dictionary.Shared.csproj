@@ -1,4 +1,4 @@
-<!-- Possible to add server and web client in the future. -->
+﻿<!-- Possible to add server and web client in the future. -->
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
@@ -7,6 +7,12 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Resources\Raw\" />
     </ItemGroup>
 
 </Project>
