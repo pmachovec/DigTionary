@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dictionary.Shared.Database.Entities;
 
 [Table(TableNames.LESSONS)]
-internal sealed class Lesson
+public sealed class Lesson
 {
     [Column(ColumnNames.ID)]
     public int Id { get; init; }

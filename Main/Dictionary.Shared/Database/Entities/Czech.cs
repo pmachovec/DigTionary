@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dictionary.Shared.Database.Entities;
 
 [Table(TableNames.CZECHS)]
-internal sealed class Czech
+public sealed class Czech
 {
     [Column(ColumnNames.TEXT)]
     public string Text { get; init; } = default!;

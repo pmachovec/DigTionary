@@ -47,6 +47,10 @@
     </ItemGroup>
 
     <ItemGroup>
+        <MauiAsset Include="..\Dictionary.Shared\Resources\Raw\de.sqlite" Link="Resources\Raw\de.sqlite" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
         <PackageReference Include="Microsoft.Maui.Controls" />
