@@ -1,3 +1,7 @@
+.content {
+    padding: 3rem
+}
+
 .status-bar-safe-area {
     display: none;
 }
