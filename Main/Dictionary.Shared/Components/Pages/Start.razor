@@ -1,8 +1,19 @@
 @using Dictionary.Shared.Components.Pages.Constants
 @using Dictionary.Shared.Resources.Translations
+@using Microsoft.AspNetCore.Components.Web
 
 @page "/"
 @inherits StartBase
+
+<div class="fw-bolder" id="start-button-div">
+    <button
+        class="border border-dark btn btn-primary btn-lg dictionary-button @StartButtonDisabled"
+        @onclick="Start">
+        Start
+    </button>
+</div>
+
+<hr />
 
 <div class="fw-bolder h3 pb-4 text-nowrap">
     @Localizer[DictionaryTranslations.ChaptersSelection]
@@ -17,7 +28,9 @@
                     <input
                         id="@($"{IdsPartial.CATEGORY}{category.Id}")"
                         class="form-check-input"
-                        type="checkbox">
+                        type="checkbox"
+                        checked="@IsCategorySelected(category.Id)"
+                        @onchange="(e => OnCategoryChange(e, category))">
                     <label class="form-check-label fw-bolder h5" for="@($"{IdsPartial.CATEGORY}{category.Id}")">
                         @category.Name
                     </label>
@@ -29,7 +42,9 @@
                         <input
                             id="@($"{IdsPartial.LESSON}{lesson.Id}")"
                             class="form-check-input"
-                            type="checkbox">
+                            type="checkbox"
+                            checked="@IsLessonSelected(lesson.Id)"
+                            @onchange="(e => OnLessonChange(e, lesson))">
                         <label class="form-check-label" for="@($"{IdsPartial.LESSON}{lesson.Id}")">
                             @lesson.Name
                         </label>

@@ -7,6 +7,12 @@ internal sealed partial class DictionaryDbContext(DbContextOptions<DictionaryDbC
 {
     public DbSet<Category> Categories { get; set; }
 
+    public DbSet<Czech> Czechs { get; set; }
+
+    public DbSet<Lesson> Lessons { get; set; }
+
+    public DbSet<Word> Words { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         _ = modelBuilder.Entity<Category>(categoryBuilder =>

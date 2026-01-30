@@ -1,4 +1,6 @@
+using Dictionary.Shared.Components.Pages;
 using Dictionary.Shared.Database;
+using Dictionary.Shared.Generator;
 using Dictionary.Shared.InternalServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,11 +9,12 @@ namespace Dictionary.Shared.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddDictionaryDb(this IServiceCollection services, string dbPath) =>
+    public static IServiceCollection ConfigureSharedInternalDependencies(this IServiceCollection services, string dbPath) =>
         services
             .AddDbContext<DictionaryDbContext>(optionsBuilder => optionsBuilder.UseSqlite($"Data Source={dbPath}"))
-            .AddScoped<ICategoryService, CategoryService>();
-
-    public static IServiceCollection AddDictionaryLocalization(this IServiceCollection services) =>
-        services.AddLocalization(options => options.ResourcesPath = "Resources");
+            .AddLocalization(options => options.ResourcesPath = "Resources")
+            .AddScoped<ICategoryService, CategoryService>()
+            .AddScoped<IWordService, WordService>()
+            .AddScoped<IWordGenerator, WordGenerator>()
+            .AddScoped<QuestionnaireParams>();
 }

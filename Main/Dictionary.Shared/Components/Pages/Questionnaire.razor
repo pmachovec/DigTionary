@@ -1,0 +1,13 @@
+@using Dictionary.Shared.Resources.Translations
+
+@* Forget about using a constant here. You cannot incorporate a string variable to the @page directive. Put up with it. *@
+@page "/questionnaire"
+@inherits QuestionnaireBase
+
+<div class="fw-bolder" hidden="@(!IsLoading)">
+    @($"{Localizer[DictionaryTranslations.Loading]}...")
+</div>
+
+<div hidden="@IsLoading">
+
+</div>

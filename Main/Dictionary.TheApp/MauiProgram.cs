@@ -28,8 +28,7 @@ public static class MauiProgram
             .ConfigureFonts(fonts => fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular"));
 
         builder.Services
-            .AddDictionaryDb(dbPath)
-            .AddDictionaryLocalization()
+            .ConfigureSharedInternalDependencies(dbPath)
             .AddMauiBlazorWebView();
 
 #if DEBUG
