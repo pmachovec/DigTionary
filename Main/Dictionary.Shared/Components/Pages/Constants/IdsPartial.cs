@@ -1,4 +1,4 @@
-namespace Dictionary.Shared.Pages.Constants;
+namespace Dictionary.Shared.Components.Pages.Constants;
 
 internal static class IdsPartial
 {

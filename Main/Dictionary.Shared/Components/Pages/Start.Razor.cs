@@ -2,7 +2,7 @@ using Dictionary.Shared.Database.Entities;
 using Dictionary.Shared.InternalServices;
 using Microsoft.AspNetCore.Components;
 
-namespace Dictionary.Shared.Pages;
+namespace Dictionary.Shared.Components.Pages;
 
 public class StartBase : ComponentBase
 {
