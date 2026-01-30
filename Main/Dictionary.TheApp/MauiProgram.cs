@@ -29,6 +29,7 @@ public static class MauiProgram
 
         builder.Services
             .AddDictionaryDb(dbPath)
+            .AddDictionaryLocalization()
             .AddMauiBlazorWebView();
 
 #if DEBUG

@@ -11,4 +11,7 @@ public static class ServiceCollectionExtensions
         services
             .AddDbContext<DictionaryDbContext>(optionsBuilder => optionsBuilder.UseSqlite($"Data Source={dbPath}"))
             .AddScoped<ICategoryService, CategoryService>();
+
+    public static IServiceCollection AddDictionaryLocalization(this IServiceCollection services) =>
+        services.AddLocalization(options => options.ResourcesPath = "Resources");
 }

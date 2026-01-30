@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <EFCoreVersion>10.0.0</EFCoreVersion>
+        <MSExtensionsVersion>10.0.0</MSExtensionsVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -9,7 +10,8 @@
         <PackageVersion Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="$(MauiVersion)" />
         <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="$(EFCoreVersion)" />
         <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="$(EFCoreVersion)" />
-        <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
+        <PackageVersion Include="Microsoft.Extensions.Localization" Version="$(MSExtensionsVersion)" />
+        <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="$(MSExtensionsVersion)" />
         <PackageVersion Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
     </ItemGroup>
 
