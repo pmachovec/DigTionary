@@ -1,4 +1,6 @@
-@inherits LayoutComponentBase
+@using Dictionary.Shared.Resources.Translations
+
+@inherits MainLayoutBase
 
 <div class="content">
     <main>
@@ -7,7 +9,7 @@
 </div>
 
 <div id="blazor-error-ui" data-nosnippet>
-    <span id="unhandled-error">An unhandled error has occurred</span>.
-    <a href="." class="reload"><span id="reload">Reload</span></a>
+    <span id="unhandled-error">@Localizer[DictionaryTranslations.UnhandledErrorOccured]</span>.
+    <a href="." class="reload"><span id="reload">@Localizer[DictionaryTranslations.Reload]</span></a>
     <span class="dismiss">🗙</span>
 </div>

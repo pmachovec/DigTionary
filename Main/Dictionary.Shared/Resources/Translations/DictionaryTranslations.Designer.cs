@@ -68,5 +68,41 @@ namespace Dictionary.Shared.Resources.Translations {
                 return ResourceManager.GetString("ChaptersSelection", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The content you are looking for does not exist.
+        /// </summary>
+        public static string ContentDoesNotExist {
+            get {
+                return ResourceManager.GetString("ContentDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not Found.
+        /// </summary>
+        public static string NotFound {
+            get {
+                return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reload.
+        /// </summary>
+        public static string Reload {
+            get {
+                return ResourceManager.GetString("Reload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unhandled error has occurred.
+        /// </summary>
+        public static string UnhandledErrorOccured {
+            get {
+                return ResourceManager.GetString("UnhandledErrorOccured", resourceCulture);
+            }
+        }
     }
 }

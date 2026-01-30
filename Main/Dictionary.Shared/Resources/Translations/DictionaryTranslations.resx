@@ -120,4 +120,16 @@
   <data name="ChaptersSelection" xml:space="preserve">
     <value>Chapters Selection</value>
   </data>
+  <data name="ContentDoesNotExist" xml:space="preserve">
+    <value>The content you are looking for does not exist</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>Not Found</value>
+  </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Reload</value>
+  </data>
+  <data name="UnhandledErrorOccured" xml:space="preserve">
+    <value>An unhandled error has occurred</value>
+  </data>
 </root>

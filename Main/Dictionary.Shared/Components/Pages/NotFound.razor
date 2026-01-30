@@ -1,7 +1,10 @@
-@using Dictionary.Shared.Components.Layout
-
 @page "/not-found"
+
+@using Dictionary.Shared.Components.Layout
+@using Dictionary.Shared.Resources.Translations
+
+@inherits NotFoundBase
 @layout MainLayout
 
-<h3>Not Found</h3>
-<p>Sorry, the content you are looking for does not exist.</p>
+<h3>@(Localizer[DictionaryTranslations.NotFound]).</h3>
+<p>@(Localizer[DictionaryTranslations.ContentDoesNotExist]).</p>
