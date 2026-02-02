@@ -2,7 +2,7 @@ using Dictionary.Shared.Database;
 using Dictionary.Shared.Database.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Dictionary.Shared.InternalServices;
+namespace Dictionary.Shared.Services;
 
 internal sealed class WordService(DictionaryDbContext _dictionaryDbContext) : IWordService
 {

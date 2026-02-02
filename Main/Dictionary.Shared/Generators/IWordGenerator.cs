@@ -1,6 +1,6 @@
 using Dictionary.Shared.Database.Entities;
 
-namespace Dictionary.Shared.Generator;
+namespace Dictionary.Shared.Generators;
 
 internal interface IWordGenerator
 {

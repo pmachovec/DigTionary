@@ -1,7 +1,7 @@
 using Dictionary.Shared.Components.Pages;
 using Dictionary.Shared.Database;
-using Dictionary.Shared.Generator;
-using Dictionary.Shared.InternalServices;
+using Dictionary.Shared.Generators;
+using Dictionary.Shared.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

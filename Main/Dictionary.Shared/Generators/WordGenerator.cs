@@ -1,7 +1,7 @@
 using Dictionary.Shared.Database.Entities;
-using Dictionary.Shared.InternalServices;
+using Dictionary.Shared.Services;
 
-namespace Dictionary.Shared.Generator;
+namespace Dictionary.Shared.Generators;
 
 internal sealed class WordGenerator(IWordService _wordService) : IWordGenerator
 {

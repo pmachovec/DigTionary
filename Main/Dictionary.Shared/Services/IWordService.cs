@@ -1,6 +1,6 @@
 using Dictionary.Shared.Database.Entities;
 
-namespace Dictionary.Shared.InternalServices;
+namespace Dictionary.Shared.Services;
 
 internal interface IWordService
 {

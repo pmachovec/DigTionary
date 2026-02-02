@@ -1,7 +1,7 @@
 using Dictionary.Shared.Components.Pages.Constants;
 using Dictionary.Shared.Database.Entities;
-using Dictionary.Shared.Generator;
-using Dictionary.Shared.InternalServices;
+using Dictionary.Shared.Generators;
+using Dictionary.Shared.Services;
 using Dictionary.Shared.Resources.Translations;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
