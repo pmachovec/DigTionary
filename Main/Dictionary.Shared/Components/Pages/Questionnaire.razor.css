@@ -1,4 +1,5 @@
 .button-div {
     cursor: pointer;
-    height: 60px;
+    height: 70px;
+    vertical-align: middle;
 }

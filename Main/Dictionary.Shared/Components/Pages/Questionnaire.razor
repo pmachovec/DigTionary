@@ -1,3 +1,4 @@
+@using Dictionary.Shared.Database.Entities
 @using Dictionary.Shared.Resources.Translations
 @using Microsoft.AspNetCore.Components.Web
 
@@ -47,12 +48,20 @@ else
         }
         else
         {
-            <p
+            <h3
                 class="border border-dark button-div p-3 rounded"
                 hidden="@IsResultHidden"
                 @onclick="HideResult">
-                Result
-            </p>
+                @if (ActualWord is Word actualWord)
+                {
+                    <span class="fw-bolder">
+                        @($"{actualWord.Article} {actualWord.Text}")
+                    </span>
+                    <span>
+                        @($"({actualWord.Notes}) [{actualWord.Ipa}]")
+                    </span>
+                }
+            </h3>
         }
     </div>
 }

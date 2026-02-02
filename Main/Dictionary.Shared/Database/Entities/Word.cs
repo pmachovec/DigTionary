@@ -13,7 +13,7 @@ public sealed class Word
     public string? Article { get; init; }
 
     [Column(ColumnNames.TEXT)]
-    public string TheWord { get; init; } = default!;
+    public string Text { get; init; } = default!;
 
     [Column(ColumnNames.TEXT_ASCII)]
     public string? WordAscii { get; init; }

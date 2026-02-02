@@ -25,6 +25,8 @@ public class QuestionnaireBase : ComponentBase
 
     protected string Text { get; private set; } = string.Empty;
 
+    protected Word? ActualWord => _actualCzech?.Word;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
