@@ -21,6 +21,8 @@ public class QuestionnaireBase : ComponentBase
 
     protected bool IsLoading { get; private set; } = true;
 
+    protected bool IsResultHidden { get; private set; } = true;
+
     protected string Text { get; private set; } = string.Empty;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -34,14 +36,15 @@ public class QuestionnaireBase : ComponentBase
         }
     }
 
+    protected void ShowResult() => IsResultHidden = false;
+
+    protected void HideResult() => IsResultHidden = true;
+
     private void SetUpNewCzech()
     {
         _actualCzech = CzechGenerator.GetNextCzech();
         SetUpCzech(_actualCzech);
     }
 
-    private void SetUpCzech(Czech czech)
-    {
-        Text = czech.Text;
-    }
+    private void SetUpCzech(Czech czech) => Text = czech.Text;
 }
