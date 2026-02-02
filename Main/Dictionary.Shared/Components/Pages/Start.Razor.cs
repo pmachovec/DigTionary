@@ -17,6 +17,9 @@ public class StartBase : ComponentBase
     private ICategoryService CategoryService { get; set; } = default!;
 
     [Inject]
+    private ICzechGenerator CzechGenerator { get; set; } = default!;
+
+    [Inject]
     protected IStringLocalizer<DictionaryTranslations> Localizer { get; set; } = default!;
 
     [Inject]
@@ -24,9 +27,6 @@ public class StartBase : ComponentBase
 
     [Inject]
     private QuestionnaireParams QuestionnaireParams { get; set; } = default!;
-
-    [Inject]
-    private IWordGenerator WordGenerator { get; set; } = default!;
 
     protected Category[] Categories { get; private set; } = default!;
 
@@ -90,9 +90,9 @@ public class StartBase : ComponentBase
     protected void Start()
     {
         // Comparing categories lengths is enough to determine if all categories are selected.
-        QuestionnaireParams.SetUpWordsTask = _selectedCategoriesIds.Count == Categories.Length
-            ? WordGenerator.SetUpWordsAsync(CancellationToken.None)
-            : WordGenerator.SetUpWordsAsync(_selectedLessonsIds, CancellationToken.None);
+        QuestionnaireParams.SetUpCzechsTask = _selectedCategoriesIds.Count == Categories.Length
+            ? CzechGenerator.SetUpCzechsAsync(CancellationToken.None)
+            : CzechGenerator.SetUpCzechsAsync(_selectedLessonsIds, CancellationToken.None);
 
         NavigationManager.NavigateTo("/questionnaire");
     }

@@ -8,6 +8,13 @@
     @($"{Localizer[DictionaryTranslations.Loading]}...")
 </div>
 
-<div hidden="@IsLoading">
-
+<div class="w-100" hidden="@IsLoading">
+    <p class="p-3 w-100">
+        <h3 class="fw-bolder">
+            @Text
+        </h3>
+    </p>
+    <p class="border border-dark p-3 w-100">
+        Result
+    </p>
 </div>

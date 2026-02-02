@@ -14,7 +14,7 @@ public static class ServiceCollectionExtensions
             .AddDbContext<DictionaryDbContext>(optionsBuilder => optionsBuilder.UseSqlite($"Data Source={dbPath}"))
             .AddLocalization(options => options.ResourcesPath = "Resources")
             .AddScoped<ICategoryService, CategoryService>()
-            .AddScoped<IWordService, WordService>()
-            .AddScoped<IWordGenerator, WordGenerator>()
+            .AddScoped<ICzechService, CzechService>()
+            .AddScoped<ICzechGenerator, CzechGenerator>()
             .AddScoped<QuestionnaireParams>();
 }
