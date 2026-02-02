@@ -123,16 +123,28 @@
   <data name="ContentDoesNotExist" xml:space="preserve">
     <value>The content you are looking for does not exist</value>
   </data>
+  <data name="Done" xml:space="preserve">
+    <value>Done</value>
+  </data>
   <data name="Loading" xml:space="preserve">
     <value>Loading</value>
   </data>
+  <data name="Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>Not Found</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Previous</value>
   </data>
   <data name="Reload" xml:space="preserve">
     <value>Reload</value>
   </data>
   <data name="UnhandledErrorOccured" xml:space="preserve">
     <value>An unhandled error has occurred</value>
+  </data>
+  <data name="WordsViewed" xml:space="preserve">
+    <value>Words viewed</value>
   </data>
 </root>

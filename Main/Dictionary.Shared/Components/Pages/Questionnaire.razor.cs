@@ -1,3 +1,4 @@
+using Dictionary.Shared.Components.Pages.Constants;
 using Dictionary.Shared.Database.Entities;
 using Dictionary.Shared.Generators;
 using Dictionary.Shared.Resources.Translations;
@@ -8,8 +9,6 @@ namespace Dictionary.Shared.Components.Pages;
 
 public class QuestionnaireBase : ComponentBase
 {
-    private Czech? _actualCzech;
-
     [Inject]
     protected IStringLocalizer<DictionaryTranslations> Localizer { get; set; } = default!;
 
@@ -19,13 +18,27 @@ public class QuestionnaireBase : ComponentBase
     [Inject]
     private QuestionnaireParams QuestionnaireParams { get; set; } = default!;
 
+    protected int CzechPointer;
+
+    protected string ActualText => GeneratedCzechs[CzechPointer].Text;
+
+    protected Word ActualWord => GeneratedCzechs[CzechPointer].Word;
+
+    protected int WordsShownCount { get; private set; }
+
+    protected string Done { get; private set; } = string.Empty;
+
+    protected List<Czech> GeneratedCzechs = [];
+
     protected bool IsLoading { get; private set; } = true;
 
-    protected bool IsResultHidden { get; private set; } = true;
+    protected bool IsLastWordShown { get; private set; }
 
-    protected string Text { get; private set; } = string.Empty;
+    protected string NextWordButtonDisabled { get; private set; } = CssClasses.DISABLED;
 
-    protected Word? ActualWord => _actualCzech?.Word;
+    protected string PreviousWordButtonDisabled { get; private set; } = CssClasses.DISABLED;
+
+    protected int WordPointer { get; private set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -33,20 +46,58 @@ public class QuestionnaireBase : ComponentBase
         {
             await QuestionnaireParams.SetUpCzechsTask;
             IsLoading = false;
-            SetUpNewCzech();
+            GeneratedCzechs.Add(CzechGenerator.GetNextCzech());
             StateHasChanged();
         }
     }
 
-    protected void ShowResult() => IsResultHidden = false;
-
-    protected void HideResult() => IsResultHidden = true;
-
-    private void SetUpNewCzech()
+    protected void ShowWord()
     {
-        _actualCzech = CzechGenerator.GetNextCzech();
-        SetUpCzech(_actualCzech);
+        IsLastWordShown = true;
+        WordsShownCount++;
+
+        if (WordsShownCount < CzechGenerator.CzechsCount)
+        {
+            NextWordButtonDisabled = string.Empty;
+        }
+        else
+        {
+            NextWordButtonDisabled = CssClasses.DISABLED;
+            Done = Localizer[DictionaryTranslations.Done];
+        }
     }
 
-    private void SetUpCzech(Czech czech) => Text = czech.Text;
+    protected async Task ClickNextWordButtonAsync()
+    {
+        if (CzechPointer == (GeneratedCzechs.Count - 1))
+        {
+            // The last generated Czech is currently displayed, generate and show a new one.
+            // The Word of the Czech is certainly shown, otherwise, the button would be disabled.
+            NextWordButtonDisabled = CssClasses.DISABLED;
+            IsLastWordShown = false;
+            GeneratedCzechs.Add(CzechGenerator.GetNextCzech());
+        }
+        // else Just display the next generated Czech.
+
+        PreviousWordButtonDisabled = string.Empty;
+        CzechPointer++;
+
+        if ((CzechPointer == (GeneratedCzechs.Count - 1) && !IsLastWordShown) || CzechPointer == (CzechGenerator.CzechsCount - 1))
+        {
+            // The last generated Czech is currently displayed, disable the Next button.
+            NextWordButtonDisabled = CssClasses.DISABLED;
+        }
+    }
+
+    protected async Task ClickPreviousWordButtonAsync()
+    {
+        NextWordButtonDisabled = string.Empty;
+        CzechPointer--;
+
+        if (CzechPointer == 0)
+        {
+            // The first generated Czech is currently displayed, disable the Previous button.
+            PreviousWordButtonDisabled = CssClasses.DISABLED;
+        }
+    }
 }

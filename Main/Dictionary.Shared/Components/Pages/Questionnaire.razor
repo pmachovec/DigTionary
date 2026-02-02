@@ -17,16 +17,37 @@ else
     <div class="w-100">
         <p class="p-3 w-100">
             <h3 class="fw-bolder">
-                @Text
+                @ActualText
             </h3>
         </p>
 
-        @if (IsResultHidden)
+        @if (IsLastWordShown || CzechPointer < (GeneratedCzechs.Count - 1))
         {
-            <p
+            <div class="border border-dark px-3 rounded word-div">
+                <div class="align-middle">
+                    <span class="fw-bolder">
+                        @($"{ActualWord!.Article} {ActualWord!.Text}")
+                    </span>
+                    <span>
+                        @if (ActualWord!.Notes is string notes)
+                        {
+                            @($"({notes}) [{ActualWord!.Ipa}]")
+                        }
+                        else
+                        {
+                            @($"[{ActualWord!.Ipa}]")
+                        }
+                    </span>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div
                 class="border border-dark button-div d-inline-block p-3 rounded"
-                @onclick="ShowResult">
-                <svg fill="#000000"
+                @onclick="ShowWord">
+                <svg
+                    fill="#000000"
                     version="1.1"
                     xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -44,24 +65,34 @@ else
                         <path d="M44,52H20c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S45.104,52,44,52z" />
                         </g>
                 </svg>
-            </p>
+            </div>
         }
-        else
-        {
-            <h3
-                class="border border-dark button-div p-3 rounded"
-                hidden="@IsResultHidden"
-                @onclick="HideResult">
-                @if (ActualWord is Word actualWord)
-                {
-                    <span class="fw-bolder">
-                        @($"{actualWord.Article} {actualWord.Text}")
-                    </span>
-                    <span>
-                        @($"({actualWord.Notes}) [{actualWord.Ipa}]")
-                    </span>
-                }
-            </h3>
-        }
+
+        <div class="mt-5">
+            <button
+                class="border border-dark btn btn-lg btn-primary col-auto dictionary-button mb-2 me-2 @PreviousWordButtonDisabled"
+                @onclick="async () => await ClickPreviousWordButtonAsync()">
+                @Localizer[DictionaryTranslations.Previous]
+            </button>
+
+            <button
+                class="border border-dark btn btn-lg btn-primary col-auto dictionary-button mb-2 me-2 @NextWordButtonDisabled"
+                @onclick="async () => await ClickNextWordButtonAsync()">
+                @Localizer[DictionaryTranslations.Next]
+            </button>
+
+            <span class="align-middle col-auto fw-bold h1-fixed mb-0 mx-0 text-primary">
+                @Done
+            </span>
+        </div>
+
+        <div class="fw-bolder pt-4">
+            <table class="table table-borderless w-auto">
+                <tr>
+                    <td class="text-nowrap">@Localizer[DictionaryTranslations.WordsViewed]:</td>
+                    <td class="px-2">@WordsShownCount</td>
+                </tr>
+            </table>
+        </div>
     </div>
 }

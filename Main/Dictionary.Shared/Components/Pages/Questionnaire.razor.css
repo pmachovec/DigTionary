@@ -1,5 +1,13 @@
 .button-div {
     cursor: pointer;
-    height: 70px;
-    vertical-align: middle;
+    height: 90px;
+}
+
+/* keep a fixed size regardless of viewport width */
+.h1-fixed {
+    font-size: 2.5rem !important;
+}
+
+.word-div {
+    line-height: 90px;
 }

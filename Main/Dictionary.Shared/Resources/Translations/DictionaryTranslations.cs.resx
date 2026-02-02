@@ -123,16 +123,28 @@
   <data name="ContentDoesNotExist" xml:space="preserve">
     <value>Obsah, který hledáte, neexistuje</value>
   </data>
+  <data name="Done" xml:space="preserve">
+    <value>Hotovo</value>
+  </data>
   <data name="Loading" xml:space="preserve">
     <value>Načítání</value>
   </data>
+  <data name="Next" xml:space="preserve">
+    <value>Další</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>Nenalezeno</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Předchozí</value>
   </data>
   <data name="Reload" xml:space="preserve">
     <value>Obnovit</value>
   </data>
   <data name="UnhandledErrorOccured" xml:space="preserve">
     <value>Vyskytla se neočekávaná chyba</value>
+  </data>
+  <data name="WordsViewed" xml:space="preserve">
+    <value>Zobrazeno slov</value>
   </data>
 </root>

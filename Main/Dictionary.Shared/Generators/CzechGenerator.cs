@@ -8,6 +8,9 @@ internal sealed class CzechGenerator(ICzechService _czechService) : ICzechGenera
     private Czech[]? _czechs;
     private int _czechCounter;
 
+    public int CzechsCount =>
+        _czechs?.Length ?? throw new InvalidOperationException("Questions no set up!");
+
     public async Task SetUpCzechsAsync(CancellationToken cancellationToken)
     {
         _czechs = await _czechService.GetCzechsAsync(cancellationToken);

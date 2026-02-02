@@ -79,6 +79,15 @@ namespace Dictionary.Shared.Resources.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Done.
+        /// </summary>
+        public static string Done {
+            get {
+                return ResourceManager.GetString("Done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading.
         /// </summary>
         public static string Loading {
@@ -88,11 +97,29 @@ namespace Dictionary.Shared.Resources.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        public static string Next {
+            get {
+                return ResourceManager.GetString("Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not Found.
         /// </summary>
         public static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous.
+        /// </summary>
+        public static string Previous {
+            get {
+                return ResourceManager.GetString("Previous", resourceCulture);
             }
         }
         
@@ -111,6 +138,15 @@ namespace Dictionary.Shared.Resources.Translations {
         public static string UnhandledErrorOccured {
             get {
                 return ResourceManager.GetString("UnhandledErrorOccured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Words viewed.
+        /// </summary>
+        public static string WordsViewed {
+            get {
+                return ResourceManager.GetString("WordsViewed", resourceCulture);
             }
         }
     }
