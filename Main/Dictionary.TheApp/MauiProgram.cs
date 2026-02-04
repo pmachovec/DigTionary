@@ -1,7 +1,10 @@
 using Dictionary.Shared.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using System.Globalization;
+
+#if DEBUG
+using Microsoft.Extensions.Logging;
+#endif
 
 namespace Dictionary.TheApp;
 
