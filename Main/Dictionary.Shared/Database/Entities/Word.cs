@@ -24,15 +24,10 @@ public sealed class Word
     [Column(ColumnNames.IPA)]
     public string Ipa { get; init; } = default!;
 
-    [Column(ColumnNames.CATEGORY_ID)]
-    public int CategoryId { get; init; }
-
     [Column(ColumnNames.LESSON_ID)]
     public int LessonId { get; init; }
 
     public Lesson Lesson { get; init; } = default!;
-
-    public Category Category => Lesson.Category;
 
     public ICollection<Czech> Czechs { get; init; } = [];
 }
