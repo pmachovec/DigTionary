@@ -8,8 +8,12 @@
 
 @if (IsLoading)
 {
-    <div class="fw-bolder">
-        @($"{Localizer[DictionaryTranslations.Loading]}...")
+    <div class="min-vh-100 d-flex align-items-center justify-content-center">
+        <h3 class="fw-bold">
+            @* Do not use an HTML entity for three dots. It's slightly higher than letters and looks awful. *@
+            @($"{Localizer[DictionaryTranslations.Loading]}...")
+        </h3>
+        @* Do not use a spinner here, it's laggy on Android. *@
     </div>
 }
 else

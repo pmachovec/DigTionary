@@ -1,9 +1,18 @@
-html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
+/*
+Do not move this content to MainLayout.razor.css, although it may seem more appropriate place for CSS used only by shared Razor components.
+Various size styles don't work in that case.
+*/
 
 a, .btn-link {
     color: #006bb7;
+}
+
+h1:focus {
+    outline: none;
+}
+
+html, body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .btn-primary {
@@ -24,10 +33,6 @@ a, .btn-link {
 .dictionary-button {
     min-width: 125px;
     white-space: nowrap;
-}
-
-h1:focus {
-    outline: none;
 }
 
 .valid.modified:not([type=checkbox]) {

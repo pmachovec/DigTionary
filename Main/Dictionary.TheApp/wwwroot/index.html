@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 
+<!--
+Do not move this to Shared, although it could be reused by a WebAssembly project.
+There's no way how to properly reference it from Shared.
+Each project must have this file among its wwwroot files, even when the content is identical.
+-->
+
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -8,17 +14,18 @@
         <base href="/" />
         <link rel="stylesheet" href="_content/Dictionary.Shared/lib/bootstrap/dist/css/bootstrap.min.css" />
         <link rel="stylesheet" href="_content/Dictionary.Shared/app.css" />
-        <link rel="stylesheet" href="app.css" />
         <link rel="stylesheet" href="Dictionary.TheApp.styles.css" />
         <link rel="icon" href="data:,">
     </head>
 
     <body>
-        <div class="status-bar-safe-area"></div>
-
         <div id="app">
-            <div class="content fw-bolder">
-                <span id="preparation">Loading</span>...
+            <div class="min-vh-100 d-flex align-items-center justify-content-center">
+                <h3 class="fw-bold">
+                    <!-- Do not use an HTML entity for three dots. It's slightly higher than letters and looks awful. -->
+                    <span id="loading">Loading</span>...
+                </h3>
+                <!-- Do not use a spinner here, it's laggy on Android. -->
             </div>
         </div>
 
