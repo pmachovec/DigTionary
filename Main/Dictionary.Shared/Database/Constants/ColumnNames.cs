@@ -4,6 +4,7 @@ internal static class ColumnNames
 {
     public const string ARTICLE = "article";
     public const string CATEGORY_ID = "category_id";
+    public const string CZECH_ID = "czech_id";
     public const string ID = "id";
     public const string IPA = "ipa";
     public const string LESSON_ID = "lesson_id";

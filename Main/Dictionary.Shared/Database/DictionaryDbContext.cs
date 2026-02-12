@@ -1,5 +1,7 @@
+using Dictionary.Shared.Database.Constants;
 using Dictionary.Shared.Database.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Dictionary.Shared.Database;
 
@@ -23,20 +25,18 @@ internal sealed partial class DictionaryDbContext(DbContextOptions<DictionaryDbC
 
         _ = modelBuilder.Entity<Czech>(czechBuilder =>
         {
-            _ = czechBuilder
-                .HasKey(czech =>
-                    new
-                    {
-                        czech.Text,
-                        czech.WordId
-                    }
-                );
+            _ = czechBuilder.HasKey(czech => czech.Id);
+            _ = czechBuilder.Property(czech => czech.Id).ValueGeneratedNever();
 
             _ = czechBuilder
-                .HasOne(czech => czech.Word)
+                .HasMany(czech => czech.Words)
                 .WithMany(word => word.Czechs)
-                .HasForeignKey(czech => czech.WordId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .UsingEntity<Dictionary<string, object>>(
+                    TableNames.WORDS_CZECHS,
+                    ConfigureWord,
+                    ConfigureCzech,
+                    ConfigureJoin
+                );
         });
 
         _ = modelBuilder.Entity<Lesson>(lessonBuilder =>
@@ -61,6 +61,36 @@ internal sealed partial class DictionaryDbContext(DbContextOptions<DictionaryDbC
                 .WithMany(lesson => lesson.Words)
                 .HasForeignKey(word => word.LessonId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            _ = wordBuilder
+                .HasMany(word => word.Czechs)
+                .WithMany(czech => czech.Words)
+                .UsingEntity<Dictionary<string, object>>(
+                    TableNames.WORDS_CZECHS,
+                    ConfigureCzech,
+                    ConfigureWord,
+                    ConfigureJoin
+                );
         });
+    }
+
+    private ReferenceCollectionBuilder<Czech, Dictionary<string, object>> ConfigureCzech(EntityTypeBuilder<Dictionary<string, object>> builder) =>
+        builder
+            .HasOne<Czech>()
+            .WithMany()
+            .HasForeignKey(ColumnNames.CZECH_ID)
+            .OnDelete(DeleteBehavior.Restrict);
+
+    private ReferenceCollectionBuilder<Word, Dictionary<string, object>> ConfigureWord(EntityTypeBuilder<Dictionary<string, object>> builder) =>
+        builder
+            .HasOne<Word>()
+            .WithMany()
+            .HasForeignKey(ColumnNames.WORD_ID)
+            .OnDelete(DeleteBehavior.Restrict);
+
+    private void ConfigureJoin(EntityTypeBuilder<Dictionary<string, object>> builder)
+    {
+        _ = builder.HasKey(ColumnNames.WORD_ID, ColumnNames.CZECH_ID);
+        _ = builder.ToTable(TableNames.WORDS_CZECHS);
     }
 }

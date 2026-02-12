@@ -8,12 +8,12 @@ internal sealed class CzechService(DictionaryDbContext _dictionaryDbContext) : I
 {
     public async Task<Czech[]> GetCzechsAsync(CancellationToken cancellationToken) =>
         await _dictionaryDbContext.Czechs
-            .Include(czech => czech.Word)
+            .Include(czech => czech.Words)
             .ToArrayAsync(cancellationToken);
 
     public async Task<Czech[]> GetCzechsAsync(HashSet<int> lessonsIds, CancellationToken cancellationToken) =>
         await _dictionaryDbContext.Czechs
-            .Include(czech => czech.Word)
-            .Where(czech => lessonsIds.Contains(czech.Word.LessonId))
+            .Include(czech => czech.Words)
+            .Where(czech => lessonsIds.Any(lessonId => czech.Words.Select(word => word.LessonId).Contains(lessonId)))
             .ToArrayAsync(cancellationToken);
 }

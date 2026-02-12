@@ -27,23 +27,26 @@ else
 
         @if (IsLastWordShown || CzechPointer < (GeneratedCzechs.Count - 1))
         {
-            <div class="border border-dark px-3 rounded word-div">
-                <div class="align-middle">
-                    <span class="fw-bolder">
-                        @($"{ActualWord!.Article} {ActualWord!.Text}")
-                    </span>
-                    <span>
-                        @if (ActualWord!.Notes is string notes)
-                        {
-                            @($"({notes}) [{ActualWord!.Ipa}]")
-                        }
-                        else
-                        {
-                            @($"[{ActualWord!.Ipa}]")
-                        }
-                    </span>
+            foreach (var actualWord in ActualWords)
+            {
+                <div class="border border-dark px-3 rounded word-div">
+                    <div class="align-middle">
+                        <span class="fw-bolder">
+                            @($"{actualWord.Article} {actualWord.Text}")
+                        </span>
+                        <span>
+                            @if (actualWord.Notes is string notes)
+                            {
+                                @($"({notes}) [{actualWord.Ipa}]")
+                            }
+                            else
+                            {
+                                @($"[{actualWord.Ipa}]")
+                            }
+                        </span>
+                    </div>
                 </div>
-            </div>
+            }
         }
         else
         {

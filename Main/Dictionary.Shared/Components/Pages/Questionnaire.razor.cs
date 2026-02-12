@@ -22,7 +22,7 @@ public class QuestionnaireBase : ComponentBase
 
     protected string ActualText => GeneratedCzechs[CzechPointer].Text;
 
-    protected Word ActualWord => GeneratedCzechs[CzechPointer].Word;
+    protected ICollection<Word> ActualWords => GeneratedCzechs[CzechPointer].Words;
 
     protected int WordsShownCount { get; private set; }
 
