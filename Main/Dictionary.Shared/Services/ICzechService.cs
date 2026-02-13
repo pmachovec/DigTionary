@@ -6,5 +6,5 @@ internal interface ICzechService
 {
     Task<Czech[]> GetCzechsAsync(CancellationToken cancellationToken);
 
-    Task<Czech[]> GetCzechsAsync(HashSet<int> lessonsIds, CancellationToken cancellationToken);
+    Task<Czech[]> GetCzechsAsync(ISet<int> lessonsIds, CancellationToken cancellationToken);
 }

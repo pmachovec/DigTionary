@@ -13,4 +13,12 @@ public sealed class Czech
     public string Text { get; init; } = default!;
 
     public ICollection<Word> Words { get; init; } = [];
+
+    public override bool Equals(object? obj) => obj is Czech otherCzech && otherCzech.Id == Id;
+
+    public override int GetHashCode() => Id.GetHashCode();
+
+    public static bool operator ==(Czech left, Czech right) => left.Equals(right);
+
+    public static bool operator !=(Czech left, Czech right) => !(left == right);
 }

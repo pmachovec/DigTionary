@@ -14,7 +14,7 @@ internal sealed class WordGenerator(IWordService _wordService) : IWordGenerator
         _wordCounter = _words.Length;
     }
 
-    public async Task SetUpWordsAsync(HashSet<int> lessonsIds, CancellationToken cancellationToken)
+    public async Task SetUpWordsAsync(ISet<int> lessonsIds, CancellationToken cancellationToken)
     {
         if (lessonsIds.Count == 0)
         {

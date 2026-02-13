@@ -13,4 +13,12 @@ public sealed class Category
     public string Name { get; init; } = default!;
 
     public ICollection<Lesson> Lessons { get; init; } = [];
+
+    public override bool Equals(object? obj) => obj is Category otherCategory && otherCategory.Id == Id;
+
+    public override int GetHashCode() => Id.GetHashCode();
+
+    public static bool operator ==(Category left, Category right) => left.Equals(right);
+
+    public static bool operator !=(Category left, Category right) => !(left == right);
 }

@@ -6,5 +6,5 @@ internal interface IWordService
 {
     Task<Word[]> GetWordsWithCzechsAsync(CancellationToken cancellationToken);
 
-    Task<Word[]> GetWordsWithCzechsAsync(HashSet<int> lessonsIds, CancellationToken cancellationToken);
+    Task<Word[]> GetWordsWithCzechsAsync(ISet<int> lessonsIds, CancellationToken cancellationToken);
 }

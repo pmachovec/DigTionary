@@ -18,4 +18,12 @@ public sealed class Lesson
     public Category Category { get; init; } = default!;
 
     public ICollection<Word> Words { get; init; } = [];
+
+    public override bool Equals(object? obj) => obj is Lesson otherLesson && otherLesson.Id == Id;
+
+    public override int GetHashCode() => Id.GetHashCode();
+
+    public static bool operator ==(Lesson left, Lesson right) => left.Equals(right);
+
+    public static bool operator !=(Lesson left, Lesson right) => !(left == right);
 }

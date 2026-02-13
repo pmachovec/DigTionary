@@ -16,7 +16,7 @@ public sealed class Word
     public string Text { get; init; } = default!;
 
     [Column(ColumnNames.TEXT_ASCII)]
-    public string? WordAscii { get; init; }
+    public string? TextAscii { get; init; }
 
     [Column(ColumnNames.NOTES)]
     public string? Notes { get; init; }
@@ -30,4 +30,12 @@ public sealed class Word
     public Lesson Lesson { get; init; } = default!;
 
     public ICollection<Czech> Czechs { get; init; } = [];
+
+    public override bool Equals(object? obj) => obj is Word otherWord && otherWord.Id == Id;
+
+    public override int GetHashCode() => Id.GetHashCode();
+
+    public static bool operator ==(Word left, Word right) => left.Equals(right);
+
+    public static bool operator !=(Word left, Word right) => !(left == right);
 }

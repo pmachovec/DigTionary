@@ -4,7 +4,6 @@
         <AssemblyName>Dictionary</AssemblyName>
         <EnableDefaultCssItems>false</EnableDefaultCssItems>
         <OutputType>Exe</OutputType>
-        <RootNamespace>Dictionary.TheApp</RootNamespace>
         <SingleProject>true</SingleProject>
         <TargetFrameworks>net10.0-android</TargetFrameworks>
         <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>

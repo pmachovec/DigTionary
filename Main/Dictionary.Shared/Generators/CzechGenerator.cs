@@ -17,7 +17,7 @@ internal sealed class CzechGenerator(ICzechService _czechService) : ICzechGenera
         _czechCounter = _czechs.Length;
     }
 
-    public async Task SetUpCzechsAsync(HashSet<int> lessonsIds, CancellationToken cancellationToken)
+    public async Task SetUpCzechsAsync(ISet<int> lessonsIds, CancellationToken cancellationToken)
     {
         if (lessonsIds.Count == 0)
         {

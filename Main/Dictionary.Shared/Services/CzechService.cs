@@ -11,9 +11,9 @@ internal sealed class CzechService(DictionaryDbContext _dictionaryDbContext) : I
             .Include(czech => czech.Words)
             .ToArrayAsync(cancellationToken);
 
-    public async Task<Czech[]> GetCzechsAsync(HashSet<int> lessonsIds, CancellationToken cancellationToken) =>
+    public async Task<Czech[]> GetCzechsAsync(ISet<int> lessonsIds, CancellationToken cancellationToken) =>
         await _dictionaryDbContext.Czechs
             .Include(czech => czech.Words)
-            .Where(czech => lessonsIds.Any(lessonId => czech.Words.Select(word => word.LessonId).Contains(lessonId)))
+            .Where(czech => czech.Words.Any(word => lessonsIds.Contains(word.LessonId)))
             .ToArrayAsync(cancellationToken);
 }

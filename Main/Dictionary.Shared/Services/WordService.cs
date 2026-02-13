@@ -11,7 +11,7 @@ internal sealed class WordService(DictionaryDbContext _dictionaryDbContext) : IW
             .Include(word => word.Czechs)
             .ToArrayAsync(cancellationToken);
 
-    public async Task<Word[]> GetWordsWithCzechsAsync(HashSet<int> lessonsIds, CancellationToken cancellationToken) =>
+    public async Task<Word[]> GetWordsWithCzechsAsync(ISet<int> lessonsIds, CancellationToken cancellationToken) =>
         await _dictionaryDbContext.Words
             .Where(word => lessonsIds.Contains(word.LessonId))
             .Include(word => word.Czechs)
