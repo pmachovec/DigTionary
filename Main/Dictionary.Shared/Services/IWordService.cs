@@ -4,7 +4,7 @@ namespace Dictionary.Shared.Services;
 
 internal interface IWordService
 {
-    Task<Word[]> GetWordsWithCzechsAsync(CancellationToken cancellationToken);
+    Task<Word[]> GetWordsAsync(CancellationToken cancellationToken);
 
-    Task<Word[]> GetWordsWithCzechsAsync(ISet<int> lessonsIds, CancellationToken cancellationToken);
+    Task<Word[]> GetWordsAsync(ISet<int> lessonsIds, CancellationToken cancellationToken);
 }
