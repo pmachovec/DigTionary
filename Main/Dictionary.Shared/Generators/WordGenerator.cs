@@ -10,7 +10,7 @@ internal sealed class WordGenerator(IWordService _wordService) : IWordGenerator
 
     public async Task SetUpWordsAsync(CancellationToken cancellationToken)
     {
-        _words = await _wordService.GetWordsAsync(cancellationToken);
+        _words = await _wordService.GetWordsWithCzechsAsync(cancellationToken);
         _wordCounter = _words.Length;
     }
 
@@ -21,7 +21,7 @@ internal sealed class WordGenerator(IWordService _wordService) : IWordGenerator
             throw new ArgumentException("Empty lessons IDs!");
         }
 
-        _words = await _wordService.GetWordsAsync(lessonsIds, cancellationToken);
+        _words = await _wordService.GetWordsWithCzechsAsync(lessonsIds, cancellationToken);
         _wordCounter = _words.Length;
     }
 

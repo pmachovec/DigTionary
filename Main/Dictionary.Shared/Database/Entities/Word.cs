@@ -31,9 +31,13 @@ public sealed class Word
 
     public ICollection<Czech> Czechs { get; init; } = [];
 
-    public override bool Equals(object? obj) => obj is Word otherWord && otherWord.Id == Id;
+    public override bool Equals(object? obj) =>
+        obj is Word otherWord
+        && otherWord.Article == Article
+        && otherWord.Text == Text
+        && otherWord.Notes == Notes;
 
-    public override int GetHashCode() => Id.GetHashCode();
+    public override int GetHashCode() => HashCode.Combine(Article, Text, Notes);
 
     public static bool operator ==(Word left, Word right) => left.Equals(right);
 

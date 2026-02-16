@@ -35,6 +35,12 @@ public class StartBase : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         Categories = [.. await CategoryService.GetCategoriesWithLessonsAsync(CancellationToken.None)];
+
+        if (Categories.Length == 0)
+        {
+            throw new InvalidDataException("No categories with lessons available in the database!");
+        }
+
         _selectedCategoriesIds = [];
         _selectedLessonsIds = [];
         DisableStartButtonWhenNoLessonsSelected();

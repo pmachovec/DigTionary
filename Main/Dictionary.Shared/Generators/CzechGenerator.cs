@@ -13,7 +13,13 @@ internal sealed class CzechGenerator(ICzechService _czechService) : ICzechGenera
 
     public async Task SetUpCzechsAsync(CancellationToken cancellationToken)
     {
-        _czechs = await _czechService.GetCzechsAsync(cancellationToken);
+        _czechs = await _czechService.GetCzechsWithWordsAsync(cancellationToken);
+
+        if (_czechs.Length == 0)
+        {
+            throw new InvalidDataException("No Czech words available in the database!");
+        }
+
         _czechCounter = _czechs.Length;
     }
 
@@ -24,7 +30,13 @@ internal sealed class CzechGenerator(ICzechService _czechService) : ICzechGenera
             throw new ArgumentException("Empty lessons IDs!");
         }
 
-        _czechs = await _czechService.GetCzechsAsync(lessonsIds, cancellationToken);
+        _czechs = await _czechService.GetCzechsWithWordsAsync(lessonsIds, cancellationToken);
+
+        if (_czechs.Length == 0)
+        {
+            throw new InvalidDataException("No corresponding Czech words available in the database!");
+        }
+
         _czechCounter = _czechs.Length;
     }
 
@@ -37,7 +49,7 @@ internal sealed class CzechGenerator(ICzechService _czechService) : ICzechGenera
 
         if (_czechCounter <= 0)
         {
-            throw new InvalidOperationException("No more Czech words available!");
+            throw new InvalidOperationException("No previous Czech words available!");
         }
 
         // Get random index of the remaining part of the czechs array and then decrement the counter.

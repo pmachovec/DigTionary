@@ -10,25 +10,7 @@ namespace Dictionary.Shared.Test.Services;
 [TestFixture]
 internal sealed class WordServiceTest : IDisposable
 {
-    private static readonly Czech _czech_horse = new()
-    {
-        Id = 1,
-        Text = "kůň"
-    };
-
-    private static readonly Czech _czech_groan = new()
-    {
-        Id = 2,
-        Text = "úpět"
-    };
-
-    private static readonly Czech _czech_yellowish = new()
-    {
-        Id = 3,
-        Text = "žluťoučký"
-    };
-
-    private static readonly Word _word_horse = new()
+    private static readonly Word _wordHorse = new()
     {
         Id = 1,
         Article = "das",
@@ -38,7 +20,7 @@ internal sealed class WordServiceTest : IDisposable
         LessonId = 1
     };
 
-    private static readonly Word _word_groan = new()
+    private static readonly Word _wordGroan = new()
     {
         Id = 2,
         Text = "stöhnen",
@@ -47,12 +29,30 @@ internal sealed class WordServiceTest : IDisposable
         LessonId = 2
     };
 
-    private static readonly Word _word_yellowish = new()
+    private static readonly Word _wordYellowish = new()
     {
         Id = 3,
         Text = "gelblich",
         Ipa = "gɛlbliç",
         LessonId = 3
+    };
+
+    private static readonly Czech _czechHorse = new()
+    {
+        Id = 1,
+        Text = "kůň"
+    };
+
+    private static readonly Czech _czechGroan = new()
+    {
+        Id = 2,
+        Text = "úpět"
+    };
+
+    private static readonly Czech _czechYellowish = new()
+    {
+        Id = 3,
+        Text = "žluťoučký"
     };
 
     private DictionaryDbContext _dictionaryDbContext = default!;
@@ -66,36 +66,6 @@ internal sealed class WordServiceTest : IDisposable
             .Options;
 
         _dictionaryDbContext = new(options);
-
-        // Establish the relationship table in the in-memory database.
-        // Must be done before adding entities to the database.
-        _dictionaryDbContext
-            .Set<Dictionary<string, object>>(TableNames.WORDS_CZECHS)
-            .AddRange(
-                new Dictionary<string, object>
-                {
-                    [ColumnNames.WORD_ID] = _word_groan.Id,
-                    [ColumnNames.CZECH_ID] = _czech_groan.Id
-                },
-                new Dictionary<string, object>
-                {
-                    [ColumnNames.WORD_ID] = _word_horse.Id,
-                    [ColumnNames.CZECH_ID] = _czech_horse.Id
-                },
-                new Dictionary<string, object>
-                {
-                    [ColumnNames.WORD_ID] = _word_yellowish.Id,
-                    [ColumnNames.CZECH_ID] = _czech_yellowish.Id
-                }
-            );
-
-        _ = _dictionaryDbContext.Add(_czech_horse);
-        _ = _dictionaryDbContext.Add(_czech_groan);
-        _ = _dictionaryDbContext.Add(_czech_yellowish);
-        _ = _dictionaryDbContext.Add(_word_horse);
-        _ = _dictionaryDbContext.Add(_word_groan);
-        _ = _dictionaryDbContext.Add(_word_yellowish);
-        _ = _dictionaryDbContext.SaveChanges();
         _wordService = new(_dictionaryDbContext);
     }
 
@@ -105,81 +75,115 @@ internal sealed class WordServiceTest : IDisposable
     public void Dispose() => _dictionaryDbContext.Database?.EnsureDeleted();
 
     [Test]
-    public async Task GetWordsAsyncTest_WithoutLessonIds_ShouldReturnAllWords()
+    public async Task GetWordsWithCzechsAsyncTest_WithoutLessonIds_NoWordsInDb_ShouldThrow() =>
+        Assert.That(
+            async () => await _wordService.GetWordsWithCzechsAsync(CancellationToken.None),
+            Throws.TypeOf<InvalidDataException>()
+        );
+
+    [Test]
+    public async Task GetWordsWithCzechsAsyncTest_NoWordsInDb_ShouldThrow() =>
+        Assert.That(
+            async () => await _wordService.GetWordsWithCzechsAsync(new HashSet<int>() { 1, 2, 3 }, CancellationToken.None),
+            Throws.TypeOf<InvalidDataException>()
+        );
+
+    [Test]
+    public async Task GetWordsWithCzechsAsyncTest_WithoutLessonIds_ShouldReturnAllWords()
     {
-        var result = await _wordService.GetWordsAsync(CancellationToken.None);
-        Assert.That(result, Is.Not.Null);
-        Assert.That(result.Length, Is.EqualTo(3));
-
-        var expectedWords = new[] { _word_horse, _word_groan, _word_yellowish };
-
-        foreach (var expectedWord in expectedWords)
-        {
-            Assert.That(result, Does.Contain(expectedWord));
-            var matchingWord = result.First(word => word.Id == expectedWord.Id);
-            Assert.That(expectedWord, Is.EqualTo(matchingWord).UsingPropertiesComparer());
-        }
+        FillDatabase();
+        var result = await _wordService.GetWordsWithCzechsAsync(CancellationToken.None);
+        AssertExpectedWords(result, _wordHorse, _wordGroan, _wordYellowish);
     }
 
     [Test]
-    public async Task GetCzechsAsyncTest_OneLessonId_DoesNotExistAmongWordLessonIds_ShouldReturnEmpty()
+    public async Task GetWordsWithCzechsAsyncTest_OneLessonId_DoesNotExistAmongWordLessonIds_ShouldReturnEmpty()
     {
-        var result = await _wordService.GetWordsAsync(new HashSet<int>() { 99 }, CancellationToken.None);
+        FillDatabase();
+        var result = await _wordService.GetWordsWithCzechsAsync(new HashSet<int>() { 99 }, CancellationToken.None);
         Assert.That(result, Is.Not.Null);
         Assert.That(result.Length, Is.EqualTo(0));
     }
 
     [Test]
-    public async Task GetCzechsAsyncTest_MultipleLessonIds_DoNotExistAmongWordLessonIds_ShouldReturnEmpty()
+    public async Task GetWordsWithCzechsAsyncTest_MultipleLessonIds_DoNotExistAmongWordLessonIds_ShouldReturnEmpty()
     {
-        var result = await _wordService.GetWordsAsync(new HashSet<int>() { 97, 98, 99 }, CancellationToken.None);
+        FillDatabase();
+        var result = await _wordService.GetWordsWithCzechsAsync(new HashSet<int>() { 97, 98, 99 }, CancellationToken.None);
         Assert.That(result, Is.Not.Null);
         Assert.That(result.Length, Is.EqualTo(0));
     }
 
     [Test]
-    public async Task GetCzechsAsyncTest_OneLessonId_ExistsAmongWordLessonIds_ShouldReturnCzech()
+    public async Task GetWordsWithCzechsAsyncTest_OneLessonId_ExistsAmongWordLessonIds_ShouldReturnWord()
     {
-        var result = await _wordService.GetWordsAsync(new HashSet<int>() { 1 }, CancellationToken.None);
-        Assert.That(result, Is.Not.Null);
-        Assert.That(result.Length, Is.EqualTo(1));
-        Assert.That(result[0], Is.EqualTo(_word_horse).UsingPropertiesComparer());
+        FillDatabase();
+        var result = await _wordService.GetWordsWithCzechsAsync(new HashSet<int>() { 1 }, CancellationToken.None);
+        AssertExpectedWords(result, _wordHorse);
     }
 
     [Test]
-    public async Task GetCzechsAsyncTest_MultipleLessonIds_OneExistsAmongWordLessonIds_ShouldReturnCzech()
+    public async Task GetWordsWithCzechsAsyncTest_MultipleLessonIds_OneExistsAmongWordLessonIds_ShouldReturnWord()
     {
-        var result = await _wordService.GetWordsAsync(new HashSet<int>() { 1, 98, 99 }, CancellationToken.None);
-        Assert.That(result, Is.Not.Null);
-        Assert.That(result.Length, Is.EqualTo(1));
-        Assert.That(result[0], Is.EqualTo(_word_horse).UsingPropertiesComparer());
+        FillDatabase();
+        var result = await _wordService.GetWordsWithCzechsAsync(new HashSet<int>() { 1, 98, 99 }, CancellationToken.None);
+        AssertExpectedWords(result, _wordHorse);
     }
 
     [Test]
-    public async Task GetCzechsAsyncTest_MultipleLessonIds_SomeExistAmongWordLessonIds_ShouldReturnCorrespondingCzechs()
+    public async Task GetWordsWithCzechsAsyncTest_MultipleLessonIds_SomeExistAmongWordLessonIds_ShouldReturnCorrespondingWords()
     {
-        var result = await _wordService.GetWordsAsync(new HashSet<int>() { 1, 2, 99 }, CancellationToken.None);
-        Assert.That(result, Is.Not.Null);
-        Assert.That(result.Length, Is.EqualTo(2));
-
-        var expectedWords = new[] { _word_horse, _word_groan };
-
-        foreach (var expectedWord in expectedWords)
-        {
-            Assert.That(result, Does.Contain(expectedWord));
-            var matchingWord = result.First(word => word.Id == expectedWord.Id);
-            Assert.That(expectedWord, Is.EqualTo(matchingWord).UsingPropertiesComparer());
-        }
+        FillDatabase();
+        var result = await _wordService.GetWordsWithCzechsAsync(new HashSet<int>() { 1, 2, 99 }, CancellationToken.None);
+        AssertExpectedWords(result, _wordHorse, _wordGroan);
     }
 
     [Test]
-    public async Task GetCzechsAsyncTest_MultipleLessonIds_AllExistsAmongWordLessonIds_ShouldReturnCorrespondingCzechs()
+    public async Task GetWordsWithCzechsAsyncTest_MultipleLessonIds_AllExistsAmongWordLessonIds_ShouldReturnCorrespondingWords()
     {
-        var result = await _wordService.GetWordsAsync(new HashSet<int>() { 1, 2, 3, 97, 98, 99 }, CancellationToken.None);
-        Assert.That(result, Is.Not.Null);
-        Assert.That(result.Length, Is.EqualTo(3));
+        FillDatabase();
+        var result = await _wordService.GetWordsWithCzechsAsync(new HashSet<int>() { 1, 2, 3 }, CancellationToken.None);
+        AssertExpectedWords(result, _wordHorse, _wordGroan, _wordYellowish);
+    }
 
-        var expectedWords = new[] { _word_horse, _word_groan, _word_yellowish };
+    private void FillDatabase()
+    {
+        _dictionaryDbContext
+            .Set<Dictionary<string, object>>(TableNames.WORDS_CZECHS)
+            .AddRange(
+                new Dictionary<string, object>
+                {
+                    [ColumnNames.WORD_ID] = _wordGroan.Id,
+                    [ColumnNames.CZECH_ID] = _czechGroan.Id
+                },
+                new Dictionary<string, object>
+                {
+                    [ColumnNames.WORD_ID] = _wordHorse.Id,
+                    [ColumnNames.CZECH_ID] = _czechHorse.Id
+                },
+                new Dictionary<string, object>
+                {
+                    [ColumnNames.WORD_ID] = _wordYellowish.Id,
+                    [ColumnNames.CZECH_ID] = _czechYellowish.Id
+                }
+            );
+
+        _dictionaryDbContext.AddRange(
+            _wordHorse,
+            _wordGroan,
+            _wordYellowish,
+            _czechHorse,
+            _czechGroan,
+            _czechYellowish
+        );
+
+        _ = _dictionaryDbContext.SaveChanges();
+    }
+
+    private static void AssertExpectedWords(Word[]? result, params Word[] expectedWords)
+    {
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result!.Length, Is.EqualTo(expectedWords.Length));
 
         foreach (var expectedWord in expectedWords)
         {

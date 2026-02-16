@@ -117,3 +117,6 @@ csharp_prefer_system_threading_lock = true:suggestion
 
 # CA1863: Use 'CompositeFormat'
 dotnet_diagnostic.CA1863.severity = none
+
+# IDE0046: Convert to conditional expression
+dotnet_diagnostic.IDE0046.severity = none

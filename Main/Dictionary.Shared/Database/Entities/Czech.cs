@@ -14,9 +14,11 @@ public sealed class Czech
 
     public ICollection<Word> Words { get; init; } = [];
 
-    public override bool Equals(object? obj) => obj is Czech otherCzech && otherCzech.Id == Id;
+    public override bool Equals(object? obj) =>
+        obj is Czech otherCzech
+        && otherCzech.Text == Text;
 
-    public override int GetHashCode() => Id.GetHashCode();
+    public override int GetHashCode() => Text.GetHashCode();
 
     public static bool operator ==(Czech left, Czech right) => left.Equals(right);
 

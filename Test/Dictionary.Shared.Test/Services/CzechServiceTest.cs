@@ -10,25 +10,43 @@ namespace Dictionary.Shared.Test.Services;
 [TestFixture]
 internal sealed class CzechServiceTest : IDisposable
 {
-    private static readonly Czech _czech_horse = new()
+    private static readonly Czech _czechHorse = new()
     {
         Id = 1,
         Text = "kůň"
     };
 
-    private static readonly Czech _czech_groan = new()
+    private static readonly Czech _czechGroan = new()
     {
         Id = 2,
         Text = "úpět"
     };
 
-    private static readonly Czech _czech_yellowish = new()
+    private static readonly Czech _czechYellowish = new()
     {
         Id = 3,
         Text = "žluťoučký"
     };
 
-    private static readonly Word _word_horse = new()
+    private static readonly Czech _czechNote1 = new()
+    {
+        Id = 4,
+        Text = "známka"
+    };
+
+    private static readonly Czech _czechNote2 = new()
+    {
+        Id = 5,
+        Text = "nota"
+    };
+
+    private static readonly Czech _czechNote3 = new()
+    {
+        Id = 6,
+        Text = "zpráva"
+    };
+
+    private static readonly Word _wordHorse = new()
     {
         Id = 1,
         Article = "das",
@@ -38,7 +56,7 @@ internal sealed class CzechServiceTest : IDisposable
         LessonId = 1
     };
 
-    private static readonly Word _word_groan = new()
+    private static readonly Word _wordGroan = new()
     {
         Id = 2,
         Text = "stöhnen",
@@ -47,12 +65,42 @@ internal sealed class CzechServiceTest : IDisposable
         LessonId = 2
     };
 
-    private static readonly Word _word_yellowish = new()
+    private static readonly Word _wordYellowish = new()
     {
         Id = 3,
         Text = "gelblich",
         Ipa = "gɛlbliç",
         LessonId = 3
+    };
+
+    private static readonly Word _wordNote1 = new()
+    {
+        Id = 4,
+        Article = "die",
+        Text = "Note",
+        Ipa = "no:tə",
+        Notes = "-, -n",
+        LessonId = 4
+    };
+
+    private static readonly Word _wordNote2 = new()
+    {
+        Id = 5,
+        Article = "der",
+        Text = "Bericht",
+        Ipa = "bəriçt",
+        Notes = "-(e)s, -e",
+        LessonId = 5
+    };
+
+    private static readonly Word _wordNote3 = new()
+    {
+        Id = 6,
+        Article = "das",
+        Text = "Tonzeichen",
+        Ipa = "tɔntsajçən",
+        Notes = "-s, -",
+        LessonId = 6
     };
 
     private DictionaryDbContext _dictionaryDbContext = default!;
@@ -66,36 +114,6 @@ internal sealed class CzechServiceTest : IDisposable
             .Options;
 
         _dictionaryDbContext = new(options);
-
-        // Establish the relationship table in the in-memory database.
-        // Must be done before adding entities to the database.
-        _dictionaryDbContext
-            .Set<Dictionary<string, object>>(TableNames.WORDS_CZECHS)
-            .AddRange(
-                new Dictionary<string, object>
-                {
-                    [ColumnNames.WORD_ID] = _word_groan.Id,
-                    [ColumnNames.CZECH_ID] = _czech_groan.Id
-                },
-                new Dictionary<string, object>
-                {
-                    [ColumnNames.WORD_ID] = _word_horse.Id,
-                    [ColumnNames.CZECH_ID] = _czech_horse.Id
-                },
-                new Dictionary<string, object>
-                {
-                    [ColumnNames.WORD_ID] = _word_yellowish.Id,
-                    [ColumnNames.CZECH_ID] = _czech_yellowish.Id
-                }
-            );
-
-        _ = _dictionaryDbContext.Add(_czech_horse);
-        _ = _dictionaryDbContext.Add(_czech_groan);
-        _ = _dictionaryDbContext.Add(_czech_yellowish);
-        _ = _dictionaryDbContext.Add(_word_horse);
-        _ = _dictionaryDbContext.Add(_word_groan);
-        _ = _dictionaryDbContext.Add(_word_yellowish);
-        _ = _dictionaryDbContext.SaveChanges();
         _czechService = new(_dictionaryDbContext);
     }
 
@@ -105,86 +123,189 @@ internal sealed class CzechServiceTest : IDisposable
     public void Dispose() => _dictionaryDbContext.Database?.EnsureDeleted();
 
     [Test]
-    public async Task GetCzechsAsyncTest_WithoutLessonIds_ShouldReturnAllCzechs()
+    public async Task GetCzechsWithWordsAsyncTest_WithoutLessonIds_NoCzechsInDb_ShouldThrow() =>
+        Assert.That(
+            async () => await _czechService.GetCzechsWithWordsAsync(CancellationToken.None),
+            Throws.TypeOf<InvalidDataException>()
+        );
+
+    [Test]
+    public async Task GetCzechsWithWordsAsyncTest_NoCzechsInDb_ShouldThrow() =>
+        Assert.That(
+            async () => await _czechService.GetCzechsWithWordsAsync(new HashSet<int>() { 1, 2, 3 }, CancellationToken.None),
+            Throws.TypeOf<InvalidDataException>()
+        );
+
+    [Test]
+    public async Task GetCzechsWithWordsAsyncTest_WithoutLessonIds_ShouldReturnAllCzechs()
     {
-        var result = await _czechService.GetCzechsAsync(CancellationToken.None);
-        Assert.That(result, Is.Not.Null);
-        Assert.That(result.Length, Is.EqualTo(3));
-
-        var expectedCzechs = new[] { _czech_horse, _czech_groan, _czech_yellowish };
-
-        foreach (var expectedCzech in expectedCzechs)
-        {
-            Assert.That(result, Does.Contain(expectedCzech));
-            var matchingCzech = result.First(czech => czech.Id == expectedCzech.Id);
-            Assert.That(expectedCzech, Is.EqualTo(matchingCzech).UsingPropertiesComparer());
-        }
+        FillDatabase();
+        var result = await _czechService.GetCzechsWithWordsAsync(CancellationToken.None);
+        AssertExpectedCzechs(result, _czechHorse, _czechGroan, _czechYellowish, _czechNote1, _czechNote2, _czechNote3);
     }
 
     [Test]
-    public async Task GetCzechsAsyncTest_OneLessonId_DoesNotExistAmongWordLessonIds_ShouldReturnEmpty()
+    public async Task GetCzechsWithWordsAsyncTest_OneLessonId_DoesNotExistAmongWordLessonIds_ShouldReturnEmpty()
     {
-        var result = await _czechService.GetCzechsAsync(new HashSet<int>() { 99 }, CancellationToken.None);
+        FillDatabase();
+        var result = await _czechService.GetCzechsWithWordsAsync(new HashSet<int>() { 99 }, CancellationToken.None);
         Assert.That(result, Is.Not.Null);
         Assert.That(result.Length, Is.EqualTo(0));
     }
 
     [Test]
-    public async Task GetCzechsAsyncTest_MultipleLessonIds_DoNotExistAmongWordLessonIds_ShouldReturnEmpty()
+    public async Task GetCzechsWithWordsAsyncTest_MultipleLessonIds_DoNotExistAmongWordLessonIds_ShouldReturnEmpty()
     {
-        var result = await _czechService.GetCzechsAsync(new HashSet<int>() { 97, 98, 99 }, CancellationToken.None);
+        FillDatabase();
+        var result = await _czechService.GetCzechsWithWordsAsync(new HashSet<int>() { 97, 98, 99 }, CancellationToken.None);
         Assert.That(result, Is.Not.Null);
         Assert.That(result.Length, Is.EqualTo(0));
     }
 
     [Test]
-    public async Task GetCzechsAsyncTest_OneLessonId_ExistsAmongWordLessonIds_ShouldReturnCzech()
+    public async Task GetCzechsWithWordsAsyncTest_OneLessonId_ExistsAmongWordLessonIds_ShouldReturnCzech()
     {
-        var result = await _czechService.GetCzechsAsync(new HashSet<int>() { 1 }, CancellationToken.None);
-        Assert.That(result, Is.Not.Null);
-        Assert.That(result.Length, Is.EqualTo(1));
-        Assert.That(result[0], Is.EqualTo(_czech_horse).UsingPropertiesComparer());
+        FillDatabase();
+        var result = await _czechService.GetCzechsWithWordsAsync(new HashSet<int>() { 1 }, CancellationToken.None);
+        AssertExpectedCzechs(result, _czechHorse);
     }
 
     [Test]
-    public async Task GetCzechsAsyncTest_MultipleLessonIds_OneExistsAmongWordLessonIds_ShouldReturnCzech()
+    public async Task GetCzechsWithWordsAsyncTest_MultipleLessonIds_OneExistsAmongWordLessonIds_ShouldReturnCzech()
     {
-        var result = await _czechService.GetCzechsAsync(new HashSet<int>() { 1, 98, 99 }, CancellationToken.None);
-        Assert.That(result, Is.Not.Null);
-        Assert.That(result.Length, Is.EqualTo(1));
-        Assert.That(result[0], Is.EqualTo(_czech_horse).UsingPropertiesComparer());
+        FillDatabase();
+        var result = await _czechService.GetCzechsWithWordsAsync(new HashSet<int>() { 1, 98, 99 }, CancellationToken.None);
+        AssertExpectedCzechs(result, _czechHorse);
     }
 
     [Test]
-    public async Task GetCzechsAsyncTest_MultipleLessonIds_SomeExistAmongWordLessonIds_ShouldReturnCorrespondingCzechs()
+    public async Task GetCzechsWithWordsAsyncTest_MultipleLessonIds_SomeExistAmongWordLessonIds_ShouldReturnCorrespondingCzechs()
     {
-        var result = await _czechService.GetCzechsAsync(new HashSet<int>() { 1, 2, 99 }, CancellationToken.None);
-        Assert.That(result, Is.Not.Null);
-        Assert.That(result.Length, Is.EqualTo(2));
+        FillDatabase();
+        var result = await _czechService.GetCzechsWithWordsAsync(new HashSet<int>() { 1, 2, 99 }, CancellationToken.None);
+        AssertExpectedCzechs(result, _czechHorse, _czechGroan);
+    }
 
-        var expectedCzechs = new[] { _czech_horse, _czech_groan };
+    [Test]
+    public async Task GetCzechsWithWordsAsyncTest_MultipleLessonIds_AllExistsAmongWordLessonIds_ShouldReturnCorrespondingCzechs()
+    {
+        FillDatabase();
+        var result = await _czechService.GetCzechsWithWordsAsync(new HashSet<int>() { 1, 2, 3 }, CancellationToken.None);
+        AssertExpectedCzechs(result, _czechHorse, _czechGroan, _czechYellowish);
+    }
+
+    [Test]
+    public async Task GetCzechsWithWordsAsyncTest_SingleLessonId_MatchingMultipleWords_ShouldReturnCorrespondingCzechs()
+    {
+        FillDatabase();
+        var result = await _czechService.GetCzechsWithWordsAsync(new HashSet<int>() { 4 }, CancellationToken.None);
+        AssertExpectedCzechs(result, _czechNote1, _czechNote2, _czechNote3);
+    }
+
+    [Test]
+    public async Task GetCzechsWithWordsAsyncTest_MultipleLessonIds_SomeMatchingMultipleWords_ShouldReturnCorrespondingCzechs()
+    {
+        FillDatabase();
+        var result = await _czechService.GetCzechsWithWordsAsync(new HashSet<int>() { 4, 5, 6, 98, 99 }, CancellationToken.None);
+        AssertExpectedCzechs(result, _czechNote1, _czechNote2, _czechNote3);
+    }
+
+    private void FillDatabase()
+    {
+        // Establish the relationship table in the in-memory database.
+        // Must be done before adding entities to the database.
+        _dictionaryDbContext
+            .Set<Dictionary<string, object>>(TableNames.WORDS_CZECHS)
+            .AddRange(
+                new Dictionary<string, object>
+                {
+                    [ColumnNames.WORD_ID] = _wordGroan.Id,
+                    [ColumnNames.CZECH_ID] = _czechGroan.Id
+                },
+                new Dictionary<string, object>
+                {
+                    [ColumnNames.WORD_ID] = _wordHorse.Id,
+                    [ColumnNames.CZECH_ID] = _czechHorse.Id
+                },
+                new Dictionary<string, object>
+                {
+                    [ColumnNames.WORD_ID] = _wordYellowish.Id,
+                    [ColumnNames.CZECH_ID] = _czechYellowish.Id
+                },
+                new Dictionary<string, object>
+                {
+                    [ColumnNames.WORD_ID] = _wordNote1.Id,
+                    [ColumnNames.CZECH_ID] = _czechNote1.Id
+                },
+                new Dictionary<string, object>
+                {
+                    [ColumnNames.WORD_ID] = _wordNote1.Id,
+                    [ColumnNames.CZECH_ID] = _czechNote2.Id
+                },
+                new Dictionary<string, object>
+                {
+                    [ColumnNames.WORD_ID] = _wordNote1.Id,
+                    [ColumnNames.CZECH_ID] = _czechNote3.Id
+                },
+                new Dictionary<string, object>
+                {
+                    [ColumnNames.WORD_ID] = _wordNote2.Id,
+                    [ColumnNames.CZECH_ID] = _czechNote1.Id
+                },
+                new Dictionary<string, object>
+                {
+                    [ColumnNames.WORD_ID] = _wordNote2.Id,
+                    [ColumnNames.CZECH_ID] = _czechNote2.Id
+                },
+                new Dictionary<string, object>
+                {
+                    [ColumnNames.WORD_ID] = _wordNote2.Id,
+                    [ColumnNames.CZECH_ID] = _czechNote3.Id
+                },
+                new Dictionary<string, object>
+                {
+                    [ColumnNames.WORD_ID] = _wordNote3.Id,
+                    [ColumnNames.CZECH_ID] = _czechNote1.Id
+                },
+                new Dictionary<string, object>
+                {
+                    [ColumnNames.WORD_ID] = _wordNote3.Id,
+                    [ColumnNames.CZECH_ID] = _czechNote2.Id
+                },
+                new Dictionary<string, object>
+                {
+                    [ColumnNames.WORD_ID] = _wordNote3.Id,
+                    [ColumnNames.CZECH_ID] = _czechNote3.Id
+                }
+            );
+
+        _dictionaryDbContext.AddRange(
+            _czechHorse,
+            _czechGroan,
+            _czechYellowish,
+            _czechNote1,
+            _czechNote2,
+            _czechNote3,
+            _wordHorse,
+            _wordGroan,
+            _wordYellowish,
+            _wordNote1,
+            _wordNote2,
+            _wordNote3
+        );
+
+        _ = _dictionaryDbContext.SaveChanges();
+    }
+
+    private static void AssertExpectedCzechs(Czech[]? result, params Czech[] expectedCzechs)
+    {
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result!.Length, Is.EqualTo(expectedCzechs.Length));
 
         foreach (var expectedCzech in expectedCzechs)
         {
             Assert.That(result, Does.Contain(expectedCzech));
-            var matchingCzech = result.First(czech => czech.Id == expectedCzech.Id);
-            Assert.That(expectedCzech, Is.EqualTo(matchingCzech).UsingPropertiesComparer());
-        }
-    }
-
-    [Test]
-    public async Task GetCzechsAsyncTest_MultipleLessonIds_AllExistsAmongWordLessonIds_ShouldReturnCorrespondingCzechs()
-    {
-        var result = await _czechService.GetCzechsAsync(new HashSet<int>() { 1, 2, 3, 97, 98, 99 }, CancellationToken.None);
-        Assert.That(result, Is.Not.Null);
-        Assert.That(result.Length, Is.EqualTo(3));
-
-        Czech[] expectedCzechs = [_czech_horse, _czech_groan, _czech_yellowish];
-
-        foreach (var expectedCzech in expectedCzechs)
-        {
-            Assert.That(result, Does.Contain(expectedCzech));
-            var matchingCzech = result.First(czech => czech.Id == expectedCzech.Id);
+            var matchingCzech = result.First(word => word.Id == expectedCzech.Id);
             Assert.That(expectedCzech, Is.EqualTo(matchingCzech).UsingPropertiesComparer());
         }
     }
