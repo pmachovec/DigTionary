@@ -6,5 +6,5 @@ namespace Dictionary.Shared.Services;
 
 internal interface ICategoryService
 {
-    Task<IEnumerable<Category>> GetCategoriesWithLessonsAsync(CancellationToken cancellationToken);
+    Task<Category[]> GetCategoriesWithLessonsAsync(CancellationToken cancellationToken);
 }

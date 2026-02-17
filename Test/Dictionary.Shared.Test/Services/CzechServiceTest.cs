@@ -305,7 +305,7 @@ internal sealed class CzechServiceTest : IDisposable
         foreach (var expectedCzech in expectedCzechs)
         {
             Assert.That(result, Does.Contain(expectedCzech));
-            var matchingCzech = result.First(word => word.Id == expectedCzech.Id);
+            var matchingCzech = result.First(czech => czech.Id == expectedCzech.Id);
             Assert.That(expectedCzech, Is.EqualTo(matchingCzech).UsingPropertiesComparer());
         }
     }

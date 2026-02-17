@@ -6,7 +6,7 @@ namespace Dictionary.Shared.Services;
 
 internal sealed class CategoryService(DictionaryDbContext _dictionaryDbContext) : ICategoryService
 {
-    public async Task<IEnumerable<Category>> GetCategoriesWithLessonsAsync(CancellationToken cancellationToken)
+    public async Task<Category[]> GetCategoriesWithLessonsAsync(CancellationToken cancellationToken)
     {
         if (!_dictionaryDbContext.Categories.Any())
         {
