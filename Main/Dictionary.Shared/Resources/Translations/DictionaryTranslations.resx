@@ -141,6 +141,9 @@
   <data name="Reload" xml:space="preserve">
     <value>Reload</value>
   </data>
+  <data name="Restart" xml:space="preserve">
+    <value>Restart</value>
+  </data>
   <data name="UnhandledErrorOccured" xml:space="preserve">
     <value>An unhandled error has occurred</value>
   </data>

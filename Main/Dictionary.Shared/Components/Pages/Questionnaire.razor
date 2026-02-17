@@ -1,5 +1,6 @@
 @using Dictionary.Shared.Database.Entities
 @using Dictionary.Shared.Resources.Translations
+@using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
 
 @* Forget about using a constant here. You cannot incorporate a string variable to the @page directive. Put up with it. *@
@@ -18,7 +19,7 @@
 }
 else
 {
-    <div class="w-100">
+    <div class="mb-5 p-5">
         <p class="p-3 w-100">
             <h3 class="fw-bolder">
                 @ActualText
@@ -100,6 +101,18 @@ else
                     <td class="px-2">@WordsShownCount</td>
                 </tr>
             </table>
+        </div>
+
+        <div class="fw-bolder pt-4">
+            @*
+            The href="" causes Blazor to apply the 'active' class to the NavLink when on the /questionnaire route.
+            This class is applied to all links having the href value as prefix, and the empty value is prefix of everythign.
+            Applying the class causes setting the background to darker gray instead of the desired light gray.
+            The NavLinkMatch.All ensures that the class would be applied only if the current route exactly matched the href value.
+            *@
+            <NavLink class="border border-dark btn btn-light btn-lg dictionary-button" href="" Match="NavLinkMatch.All">
+                @Localizer[DictionaryTranslations.Restart]
+            </NavLink>
         </div>
     </div>
 }
