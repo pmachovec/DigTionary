@@ -17,12 +17,13 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         var dbPath = Path.Combine(FileSystem.AppDataDirectory, DB_FILE_NAME);
 
-        // Copy the database file to an app-dedicated folder in the current system AppData.
-        // This is the accepted way of handling resources in cross-platform MAUI.
-        // Do not try to use "Resources/Raw/{DB_FILE_NAME}" directly as the database path. It will work on Windows, but not on Android.
-        using (var dbAssetStream = FileSystem.OpenAppPackageFileAsync($"Resources/Raw/{DB_FILE_NAME}").GetAwaiter().GetResult())
-        using (var dbFileStream = new FileStream(dbPath, FileMode.OpenOrCreate))
+        if (!File.Exists(dbPath))
         {
+            // Copy the database file to an app-dedicated folder in the current system AppData.
+            // This is the accepted way of handling resources in cross-platform MAUI.
+            // Do not try to use "Resources/Raw/{DB_FILE_NAME}" directly as the database path. It will work on Windows, but not on Android.
+            using var dbAssetStream = FileSystem.OpenAppPackageFileAsync($"Resources/Raw/{DB_FILE_NAME}").GetAwaiter().GetResult();
+            using var dbFileStream = new FileStream(dbPath, FileMode.CreateNew);
             dbAssetStream.CopyTo(dbFileStream);
         }
 

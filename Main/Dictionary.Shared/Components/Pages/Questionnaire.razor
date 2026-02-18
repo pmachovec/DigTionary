@@ -20,6 +20,8 @@
 else
 {
     <div class="mb-5 p-5">
+        <hr />
+
         <p class="p-3 w-100">
             <h3 class="fw-bolder">
                 @ActualText
@@ -30,22 +32,21 @@ else
         {
             foreach (var actualWord in ActualWords)
             {
-                <div class="border border-dark mb-3 px-3 rounded word-div">
-                    <div class="align-middle">
-                        <span class="fw-bolder">
-                            @($"{actualWord.Article} {actualWord.Text}")
-                        </span>
+                <div class="border border-dark mb-3 p-3 rounded word-div">
+                    <span class="fw-bolder">
+                        @($"{actualWord.Article ?? string.Empty} {actualWord.Text}".Trim())
+                    </span>
+
+                    @if (actualWord.Notes is string notes)
+                    {
                         <span>
-                            @if (actualWord.Notes is string notes)
-                            {
-                                @($"({notes}) [{actualWord.Ipa}]")
-                            }
-                            else
-                            {
-                                @($"[{actualWord.Ipa}]")
-                            }
+                            @($"({notes})")
                         </span>
-                    </div>
+                    }
+
+                    <span>
+                        @($"[{actualWord.Ipa}]")
+                    </span>
                 </div>
             }
         }

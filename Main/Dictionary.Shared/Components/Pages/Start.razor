@@ -17,16 +17,17 @@ Do not put it to the main layout or index.html, it messes loading screens.
         @Localizer[DictionaryTranslations.ChaptersSelection]
     </div>
 
-    <div class="container-fluid text-start">
-        <div class="row">
+    <div class="container-fluid px-0 text-start">
+        <div class="row gx-4">
             @foreach (var category in Categories)
             {
-                <div class="col-auto pb-4 pe-4 ps-0 text-nowrap">
-                    <div class="form-check">
+                <div class="col-auto pb-4">
+                    <div class="form-check form-switch form-switch-scalable py-3">
                         <input
                             id="@($"{IdsPartial.CATEGORY}{category.Id}")"
                             class="form-check-input"
                             type="checkbox"
+                            role="switch"
                             checked="@IsCategorySelected(category.Id)"
                             @onchange="(e => OnCategoryChange(e, category))">
                         <label class="form-check-label fw-bolder h5" for="@($"{IdsPartial.CATEGORY}{category.Id}")">
@@ -36,11 +37,12 @@ Do not put it to the main layout or index.html, it messes loading screens.
 
                     @foreach (var lesson in category.Lessons)
                     {
-                        <div class="form-check">
+                        <div class="form-check form-switch py-2">
                             <input
                                 id="@($"{IdsPartial.LESSON}{lesson.Id}")"
                                 class="form-check-input"
                                 type="checkbox"
+                                role="switch"
                                 checked="@IsLessonSelected(lesson.Id)"
                                 @onchange="(e => OnLessonChange(e, lesson))">
                             <label class="form-check-label" for="@($"{IdsPartial.LESSON}{lesson.Id}")">
@@ -59,7 +61,7 @@ Do not put it to the main layout or index.html, it messes loading screens.
         <button
             class="border border-dark btn btn-primary btn-lg dictionary-button @StartButtonDisabled"
             @onclick="Start">
-            Start
+            @Localizer[DictionaryTranslations.Start]
         </button>
     </div>
 </div>

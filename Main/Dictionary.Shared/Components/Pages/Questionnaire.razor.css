@@ -9,5 +9,10 @@
 }
 
 .word-div {
-    line-height: 90px;
+    align-content: center;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    min-height: 90px;
 }
