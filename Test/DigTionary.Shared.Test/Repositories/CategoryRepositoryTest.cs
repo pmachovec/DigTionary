@@ -1,13 +1,13 @@
 using DigTionary.Shared.Database;
 using DigTionary.Shared.Database.Entities;
-using DigTionary.Shared.Services;
+using DigTionary.Shared.Repositories;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
-namespace DigTionary.Shared.Test.Services;
+namespace DigTionary.Shared.Test.Repositories;
 
 [TestFixture]
-internal sealed class CategoryServiceTest : IDisposable
+internal sealed class CategoryRepositoryTest : IDisposable
 {
     private static readonly Category _categoryWithLessons1 = new()
     {
@@ -70,7 +70,7 @@ internal sealed class CategoryServiceTest : IDisposable
     };
 
     private DigTionaryDbContext _digTionaryDbContext = default!;
-    private CategoryService _categoryService = default!;
+    private CategoryRepository _categoryRepository = default!;
 
     [SetUp]
     public void SetUp()
@@ -80,7 +80,7 @@ internal sealed class CategoryServiceTest : IDisposable
             .Options;
 
         _digTionaryDbContext = new(options);
-        _categoryService = new(_digTionaryDbContext);
+        _categoryRepository = new(_digTionaryDbContext);
     }
 
     [TearDown]
@@ -91,7 +91,7 @@ internal sealed class CategoryServiceTest : IDisposable
     [Test]
     public async Task GetCategoriesWithLessonsAsyncTest_NoCategoriesInDb_ShouldThrow() =>
         Assert.That(
-            async () => await _categoryService.GetCategoriesWithLessonsAsync(CancellationToken.None),
+            async () => await _categoryRepository.GetCategoriesWithLessonsAsync(CancellationToken.None),
             Throws.TypeOf<InvalidDataException>()
         );
 
@@ -105,7 +105,7 @@ internal sealed class CategoryServiceTest : IDisposable
         );
 
         _ = _digTionaryDbContext.SaveChanges();
-        var result = await _categoryService.GetCategoriesWithLessonsAsync(CancellationToken.None);
+        var result = await _categoryRepository.GetCategoriesWithLessonsAsync(CancellationToken.None);
         Assert.That(result, Is.Not.Null);
         Assert.That(result.Length, Is.EqualTo(0));
     }
@@ -122,7 +122,7 @@ internal sealed class CategoryServiceTest : IDisposable
         );
 
         _ = _digTionaryDbContext.SaveChanges();
-        var result = await _categoryService.GetCategoriesWithLessonsAsync(CancellationToken.None);
+        var result = await _categoryRepository.GetCategoriesWithLessonsAsync(CancellationToken.None);
         AssertExpectedCategories(result, _categoryWithLessons1);
     }
 
@@ -142,7 +142,7 @@ internal sealed class CategoryServiceTest : IDisposable
         );
 
         _ = _digTionaryDbContext.SaveChanges();
-        var result = await _categoryService.GetCategoriesWithLessonsAsync(CancellationToken.None);
+        var result = await _categoryRepository.GetCategoriesWithLessonsAsync(CancellationToken.None);
         AssertExpectedCategories(result, _categoryWithLessons1, _categoryWithLessons2, _categoryWithLessons3);
     }
 

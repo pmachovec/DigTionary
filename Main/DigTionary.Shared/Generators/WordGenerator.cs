@@ -1,16 +1,16 @@
 using DigTionary.Shared.Database.Entities;
-using DigTionary.Shared.Services;
+using DigTionary.Shared.Repositories;
 
 namespace DigTionary.Shared.Generators;
 
-internal sealed class WordGenerator(IWordService _wordService) : IWordGenerator
+internal sealed class WordGenerator(IWordRepository _wordRepository) : IWordGenerator
 {
     private Word[]? _words;
     private int _wordCounter;
 
     public async Task SetUpWordsAsync(CancellationToken cancellationToken)
     {
-        _words = await _wordService.GetWordsWithCzechsAsync(cancellationToken);
+        _words = await _wordRepository.GetWordsWithCzechsAsync(cancellationToken);
         _wordCounter = _words.Length;
     }
 
@@ -21,7 +21,7 @@ internal sealed class WordGenerator(IWordService _wordService) : IWordGenerator
             throw new ArgumentException("Empty lessons IDs!");
         }
 
-        _words = await _wordService.GetWordsWithCzechsAsync(lessonsIds, cancellationToken);
+        _words = await _wordRepository.GetWordsWithCzechsAsync(lessonsIds, cancellationToken);
         _wordCounter = _words.Length;
     }
 

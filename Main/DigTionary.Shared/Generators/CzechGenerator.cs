@@ -1,9 +1,9 @@
 using DigTionary.Shared.Database.Entities;
-using DigTionary.Shared.Services;
+using DigTionary.Shared.Repositories;
 
 namespace DigTionary.Shared.Generators;
 
-internal sealed class CzechGenerator(ICzechService _czechService) : ICzechGenerator
+internal sealed class CzechGenerator(ICzechRepository _czechRepository) : ICzechGenerator
 {
     private Czech[]? _czechs;
     private int _czechCounter;
@@ -13,7 +13,7 @@ internal sealed class CzechGenerator(ICzechService _czechService) : ICzechGenera
 
     public async Task SetUpCzechsAsync(CancellationToken cancellationToken)
     {
-        _czechs = await _czechService.GetCzechsWithWordsAsync(cancellationToken);
+        _czechs = await _czechRepository.GetCzechsWithWordsAsync(cancellationToken);
 
         if (_czechs.Length == 0)
         {
@@ -30,7 +30,7 @@ internal sealed class CzechGenerator(ICzechService _czechService) : ICzechGenera
             throw new ArgumentException("Empty lessons IDs!");
         }
 
-        _czechs = await _czechService.GetCzechsWithWordsAsync(lessonsIds, cancellationToken);
+        _czechs = await _czechRepository.GetCzechsWithWordsAsync(lessonsIds, cancellationToken);
 
         if (_czechs.Length == 0)
         {

@@ -2,9 +2,9 @@ using DigTionary.Shared.Database;
 using DigTionary.Shared.Database.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace DigTionary.Shared.Services;
+namespace DigTionary.Shared.Repositories;
 
-internal sealed class CzechService(DigTionaryDbContext _digTionaryDbContext) : ICzechService
+internal sealed class CzechRepository(DigTionaryDbContext _digTionaryDbContext) : ICzechRepository
 {
     public async Task<Czech[]> GetCzechsWithWordsAsync(CancellationToken cancellationToken)
     {

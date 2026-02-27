@@ -1,7 +1,7 @@
 using DigTionary.Shared.Components.Pages.Constants;
 using DigTionary.Shared.Database.Entities;
 using DigTionary.Shared.Generators;
-using DigTionary.Shared.Services;
+using DigTionary.Shared.Repositories;
 using DigTionary.Shared.Resources.Translations;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
@@ -14,7 +14,7 @@ public class StartBase : ComponentBase
     private HashSet<int> _selectedLessonsIds = default!;
 
     [Inject]
-    private ICategoryService CategoryService { get; set; } = default!;
+    private ICategoryRepository CategoryRepository { get; set; } = default!;
 
     [Inject]
     private ICzechGenerator CzechGenerator { get; set; } = default!;
@@ -34,7 +34,7 @@ public class StartBase : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        Categories = [.. await CategoryService.GetCategoriesWithLessonsAsync(CancellationToken.None)];
+        Categories = [.. await CategoryRepository.GetCategoriesWithLessonsAsync(CancellationToken.None)];
 
         if (Categories.Length == 0)
         {

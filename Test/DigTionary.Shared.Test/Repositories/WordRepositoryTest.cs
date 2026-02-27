@@ -1,14 +1,14 @@
 using DigTionary.Shared.Database;
 using DigTionary.Shared.Database.Entities;
-using DigTionary.Shared.Services;
+using DigTionary.Shared.Repositories;
 using DigTionary.Shared.Test.Database.Constants;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
-namespace DigTionary.Shared.Test.Services;
+namespace DigTionary.Shared.Test.Repositories;
 
 [TestFixture]
-internal sealed class WordServiceTest : IDisposable
+internal sealed class WordRepositoryTest : IDisposable
 {
     private static readonly Word _wordHorse = new()
     {
@@ -56,7 +56,7 @@ internal sealed class WordServiceTest : IDisposable
     };
 
     private DigTionaryDbContext _digTionaryDbContext = default!;
-    private WordService _wordService = default!;
+    private WordRepository _wordRepository = default!;
 
     [SetUp]
     public void SetUp()
@@ -66,7 +66,7 @@ internal sealed class WordServiceTest : IDisposable
             .Options;
 
         _digTionaryDbContext = new(options);
-        _wordService = new(_digTionaryDbContext);
+        _wordRepository = new(_digTionaryDbContext);
     }
 
     [TearDown]
@@ -77,14 +77,14 @@ internal sealed class WordServiceTest : IDisposable
     [Test]
     public async Task GetWordsWithCzechsAsyncTest_WithoutLessonIds_NoWordsInDb_ShouldThrow() =>
         Assert.That(
-            async () => await _wordService.GetWordsWithCzechsAsync(CancellationToken.None),
+            async () => await _wordRepository.GetWordsWithCzechsAsync(CancellationToken.None),
             Throws.TypeOf<InvalidDataException>()
         );
 
     [Test]
     public async Task GetWordsWithCzechsAsyncTest_NoWordsInDb_ShouldThrow() =>
         Assert.That(
-            async () => await _wordService.GetWordsWithCzechsAsync(new HashSet<int>() { 1, 2, 3 }, CancellationToken.None),
+            async () => await _wordRepository.GetWordsWithCzechsAsync(new HashSet<int>() { 1, 2, 3 }, CancellationToken.None),
             Throws.TypeOf<InvalidDataException>()
         );
 
@@ -92,7 +92,7 @@ internal sealed class WordServiceTest : IDisposable
     public async Task GetWordsWithCzechsAsyncTest_WithoutLessonIds_ShouldReturnAllWords()
     {
         FillDatabase();
-        var result = await _wordService.GetWordsWithCzechsAsync(CancellationToken.None);
+        var result = await _wordRepository.GetWordsWithCzechsAsync(CancellationToken.None);
         AssertExpectedWords(result, _wordHorse, _wordGroan, _wordYellowish);
     }
 
@@ -100,7 +100,7 @@ internal sealed class WordServiceTest : IDisposable
     public async Task GetWordsWithCzechsAsyncTest_OneLessonId_DoesNotExistAmongWordLessonIds_ShouldReturnEmpty()
     {
         FillDatabase();
-        var result = await _wordService.GetWordsWithCzechsAsync(new HashSet<int>() { 99 }, CancellationToken.None);
+        var result = await _wordRepository.GetWordsWithCzechsAsync(new HashSet<int>() { 99 }, CancellationToken.None);
         Assert.That(result, Is.Not.Null);
         Assert.That(result.Length, Is.EqualTo(0));
     }
@@ -109,7 +109,7 @@ internal sealed class WordServiceTest : IDisposable
     public async Task GetWordsWithCzechsAsyncTest_MultipleLessonIds_DoNotExistAmongWordLessonIds_ShouldReturnEmpty()
     {
         FillDatabase();
-        var result = await _wordService.GetWordsWithCzechsAsync(new HashSet<int>() { 97, 98, 99 }, CancellationToken.None);
+        var result = await _wordRepository.GetWordsWithCzechsAsync(new HashSet<int>() { 97, 98, 99 }, CancellationToken.None);
         Assert.That(result, Is.Not.Null);
         Assert.That(result.Length, Is.EqualTo(0));
     }
@@ -118,7 +118,7 @@ internal sealed class WordServiceTest : IDisposable
     public async Task GetWordsWithCzechsAsyncTest_OneLessonId_ExistsAmongWordLessonIds_ShouldReturnWord()
     {
         FillDatabase();
-        var result = await _wordService.GetWordsWithCzechsAsync(new HashSet<int>() { 1 }, CancellationToken.None);
+        var result = await _wordRepository.GetWordsWithCzechsAsync(new HashSet<int>() { 1 }, CancellationToken.None);
         AssertExpectedWords(result, _wordHorse);
     }
 
@@ -126,7 +126,7 @@ internal sealed class WordServiceTest : IDisposable
     public async Task GetWordsWithCzechsAsyncTest_MultipleLessonIds_OneExistsAmongWordLessonIds_ShouldReturnWord()
     {
         FillDatabase();
-        var result = await _wordService.GetWordsWithCzechsAsync(new HashSet<int>() { 1, 98, 99 }, CancellationToken.None);
+        var result = await _wordRepository.GetWordsWithCzechsAsync(new HashSet<int>() { 1, 98, 99 }, CancellationToken.None);
         AssertExpectedWords(result, _wordHorse);
     }
 
@@ -134,7 +134,7 @@ internal sealed class WordServiceTest : IDisposable
     public async Task GetWordsWithCzechsAsyncTest_MultipleLessonIds_SomeExistAmongWordLessonIds_ShouldReturnCorrespondingWords()
     {
         FillDatabase();
-        var result = await _wordService.GetWordsWithCzechsAsync(new HashSet<int>() { 1, 2, 99 }, CancellationToken.None);
+        var result = await _wordRepository.GetWordsWithCzechsAsync(new HashSet<int>() { 1, 2, 99 }, CancellationToken.None);
         AssertExpectedWords(result, _wordHorse, _wordGroan);
     }
 
@@ -142,7 +142,7 @@ internal sealed class WordServiceTest : IDisposable
     public async Task GetWordsWithCzechsAsyncTest_MultipleLessonIds_AllExistsAmongWordLessonIds_ShouldReturnCorrespondingWords()
     {
         FillDatabase();
-        var result = await _wordService.GetWordsWithCzechsAsync(new HashSet<int>() { 1, 2, 3 }, CancellationToken.None);
+        var result = await _wordRepository.GetWordsWithCzechsAsync(new HashSet<int>() { 1, 2, 3 }, CancellationToken.None);
         AssertExpectedWords(result, _wordHorse, _wordGroan, _wordYellowish);
     }
 

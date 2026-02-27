@@ -1,14 +1,14 @@
 using DigTionary.Shared.Database;
 using DigTionary.Shared.Database.Entities;
-using DigTionary.Shared.Services;
+using DigTionary.Shared.Repositories;
 using DigTionary.Shared.Test.Database.Constants;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
-namespace DigTionary.Shared.Test.Services;
+namespace DigTionary.Shared.Test.Repositories;
 
 [TestFixture]
-internal sealed class CzechServiceTest : IDisposable
+internal sealed class CzechRepositoryTest : IDisposable
 {
     private static readonly Czech _czechHorse = new()
     {
@@ -104,7 +104,7 @@ internal sealed class CzechServiceTest : IDisposable
     };
 
     private DigTionaryDbContext _digTionaryDbContext = default!;
-    private CzechService _czechService = default!;
+    private CzechRepository _czechRepository = default!;
 
     [SetUp]
     public void SetUp()
@@ -114,7 +114,7 @@ internal sealed class CzechServiceTest : IDisposable
             .Options;
 
         _digTionaryDbContext = new(options);
-        _czechService = new(_digTionaryDbContext);
+        _czechRepository = new(_digTionaryDbContext);
     }
 
     [TearDown]
@@ -125,14 +125,14 @@ internal sealed class CzechServiceTest : IDisposable
     [Test]
     public async Task GetCzechsWithWordsAsyncTest_WithoutLessonIds_NoCzechsInDb_ShouldThrow() =>
         Assert.That(
-            async () => await _czechService.GetCzechsWithWordsAsync(CancellationToken.None),
+            async () => await _czechRepository.GetCzechsWithWordsAsync(CancellationToken.None),
             Throws.TypeOf<InvalidDataException>()
         );
 
     [Test]
     public async Task GetCzechsWithWordsAsyncTest_NoCzechsInDb_ShouldThrow() =>
         Assert.That(
-            async () => await _czechService.GetCzechsWithWordsAsync(new HashSet<int>() { 1, 2, 3 }, CancellationToken.None),
+            async () => await _czechRepository.GetCzechsWithWordsAsync(new HashSet<int>() { 1, 2, 3 }, CancellationToken.None),
             Throws.TypeOf<InvalidDataException>()
         );
 
@@ -140,7 +140,7 @@ internal sealed class CzechServiceTest : IDisposable
     public async Task GetCzechsWithWordsAsyncTest_WithoutLessonIds_ShouldReturnAllCzechs()
     {
         FillDatabase();
-        var result = await _czechService.GetCzechsWithWordsAsync(CancellationToken.None);
+        var result = await _czechRepository.GetCzechsWithWordsAsync(CancellationToken.None);
         AssertExpectedCzechs(result, _czechHorse, _czechGroan, _czechYellowish, _czechNote1, _czechNote2, _czechNote3);
     }
 
@@ -148,7 +148,7 @@ internal sealed class CzechServiceTest : IDisposable
     public async Task GetCzechsWithWordsAsyncTest_OneLessonId_DoesNotExistAmongWordLessonIds_ShouldReturnEmpty()
     {
         FillDatabase();
-        var result = await _czechService.GetCzechsWithWordsAsync(new HashSet<int>() { 99 }, CancellationToken.None);
+        var result = await _czechRepository.GetCzechsWithWordsAsync(new HashSet<int>() { 99 }, CancellationToken.None);
         Assert.That(result, Is.Not.Null);
         Assert.That(result.Length, Is.EqualTo(0));
     }
@@ -157,7 +157,7 @@ internal sealed class CzechServiceTest : IDisposable
     public async Task GetCzechsWithWordsAsyncTest_MultipleLessonIds_DoNotExistAmongWordLessonIds_ShouldReturnEmpty()
     {
         FillDatabase();
-        var result = await _czechService.GetCzechsWithWordsAsync(new HashSet<int>() { 97, 98, 99 }, CancellationToken.None);
+        var result = await _czechRepository.GetCzechsWithWordsAsync(new HashSet<int>() { 97, 98, 99 }, CancellationToken.None);
         Assert.That(result, Is.Not.Null);
         Assert.That(result.Length, Is.EqualTo(0));
     }
@@ -166,7 +166,7 @@ internal sealed class CzechServiceTest : IDisposable
     public async Task GetCzechsWithWordsAsyncTest_OneLessonId_ExistsAmongWordLessonIds_ShouldReturnCzech()
     {
         FillDatabase();
-        var result = await _czechService.GetCzechsWithWordsAsync(new HashSet<int>() { 1 }, CancellationToken.None);
+        var result = await _czechRepository.GetCzechsWithWordsAsync(new HashSet<int>() { 1 }, CancellationToken.None);
         AssertExpectedCzechs(result, _czechHorse);
     }
 
@@ -174,7 +174,7 @@ internal sealed class CzechServiceTest : IDisposable
     public async Task GetCzechsWithWordsAsyncTest_MultipleLessonIds_OneExistsAmongWordLessonIds_ShouldReturnCzech()
     {
         FillDatabase();
-        var result = await _czechService.GetCzechsWithWordsAsync(new HashSet<int>() { 1, 98, 99 }, CancellationToken.None);
+        var result = await _czechRepository.GetCzechsWithWordsAsync(new HashSet<int>() { 1, 98, 99 }, CancellationToken.None);
         AssertExpectedCzechs(result, _czechHorse);
     }
 
@@ -182,7 +182,7 @@ internal sealed class CzechServiceTest : IDisposable
     public async Task GetCzechsWithWordsAsyncTest_MultipleLessonIds_SomeExistAmongWordLessonIds_ShouldReturnCorrespondingCzechs()
     {
         FillDatabase();
-        var result = await _czechService.GetCzechsWithWordsAsync(new HashSet<int>() { 1, 2, 99 }, CancellationToken.None);
+        var result = await _czechRepository.GetCzechsWithWordsAsync(new HashSet<int>() { 1, 2, 99 }, CancellationToken.None);
         AssertExpectedCzechs(result, _czechHorse, _czechGroan);
     }
 
@@ -190,7 +190,7 @@ internal sealed class CzechServiceTest : IDisposable
     public async Task GetCzechsWithWordsAsyncTest_MultipleLessonIds_AllExistsAmongWordLessonIds_ShouldReturnCorrespondingCzechs()
     {
         FillDatabase();
-        var result = await _czechService.GetCzechsWithWordsAsync(new HashSet<int>() { 1, 2, 3 }, CancellationToken.None);
+        var result = await _czechRepository.GetCzechsWithWordsAsync(new HashSet<int>() { 1, 2, 3 }, CancellationToken.None);
         AssertExpectedCzechs(result, _czechHorse, _czechGroan, _czechYellowish);
     }
 
@@ -198,7 +198,7 @@ internal sealed class CzechServiceTest : IDisposable
     public async Task GetCzechsWithWordsAsyncTest_SingleLessonId_MatchingMultipleWords_ShouldReturnCorrespondingCzechs()
     {
         FillDatabase();
-        var result = await _czechService.GetCzechsWithWordsAsync(new HashSet<int>() { 4 }, CancellationToken.None);
+        var result = await _czechRepository.GetCzechsWithWordsAsync(new HashSet<int>() { 4 }, CancellationToken.None);
         AssertExpectedCzechs(result, _czechNote1, _czechNote2, _czechNote3);
     }
 
@@ -206,7 +206,7 @@ internal sealed class CzechServiceTest : IDisposable
     public async Task GetCzechsWithWordsAsyncTest_MultipleLessonIds_SomeMatchingMultipleWords_ShouldReturnCorrespondingCzechs()
     {
         FillDatabase();
-        var result = await _czechService.GetCzechsWithWordsAsync(new HashSet<int>() { 4, 5, 6, 98, 99 }, CancellationToken.None);
+        var result = await _czechRepository.GetCzechsWithWordsAsync(new HashSet<int>() { 4, 5, 6, 98, 99 }, CancellationToken.None);
         AssertExpectedCzechs(result, _czechNote1, _czechNote2, _czechNote3);
     }
 

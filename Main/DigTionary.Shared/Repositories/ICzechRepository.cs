@@ -1,8 +1,8 @@
 using DigTionary.Shared.Database.Entities;
 
-namespace DigTionary.Shared.Services;
+namespace DigTionary.Shared.Repositories;
 
-internal interface ICzechService
+internal interface ICzechRepository
 {
     Task<Czech[]> GetCzechsWithWordsAsync(CancellationToken cancellationToken);
 

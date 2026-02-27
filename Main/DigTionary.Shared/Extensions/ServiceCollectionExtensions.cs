@@ -1,7 +1,7 @@
 using DigTionary.Shared.Components.Pages;
 using DigTionary.Shared.Database;
 using DigTionary.Shared.Generators;
-using DigTionary.Shared.Services;
+using DigTionary.Shared.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,8 +13,8 @@ public static class ServiceCollectionExtensions
         services
             .AddDbContext<DigTionaryDbContext>(optionsBuilder => optionsBuilder.UseSqlite($"Data Source={dbPath}"))
             .AddLocalization(options => options.ResourcesPath = "Resources")
-            .AddScoped<ICategoryService, CategoryService>()
-            .AddScoped<ICzechService, CzechService>()
+            .AddScoped<ICategoryRepository, CategoryRepository>()
+            .AddScoped<ICzechRepository, CzechRepository>()
             .AddScoped<ICzechGenerator, CzechGenerator>()
             .AddScoped<QuestionnaireParams>();
 }

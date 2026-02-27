@@ -2,9 +2,9 @@ using DigTionary.Shared.Database;
 using DigTionary.Shared.Database.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace DigTionary.Shared.Services;
+namespace DigTionary.Shared.Repositories;
 
-internal sealed class CategoryService(DigTionaryDbContext _digTionaryDbContext) : ICategoryService
+internal sealed class CategoryRepository(DigTionaryDbContext _digTionaryDbContext) : ICategoryRepository
 {
     public async Task<Category[]> GetCategoriesWithLessonsAsync(CancellationToken cancellationToken)
     {
