@@ -1,7 +1,7 @@
 using DigTionary.Shared.Database.Entities;
 using DigTionary.Shared.Repositories;
 
-namespace DigTionary.Shared.Generators;
+namespace DigTionary.Shared.Application;
 
 internal sealed class WordGenerator(IWordRepository _wordRepository) : IWordGenerator
 {

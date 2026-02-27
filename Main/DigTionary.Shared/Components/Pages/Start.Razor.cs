@@ -1,6 +1,6 @@
+using DigTionary.Shared.Application;
 using DigTionary.Shared.Components.Pages.Constants;
 using DigTionary.Shared.Database.Entities;
-using DigTionary.Shared.Generators;
 using DigTionary.Shared.Repositories;
 using DigTionary.Shared.Resources.Translations;
 using Microsoft.AspNetCore.Components;

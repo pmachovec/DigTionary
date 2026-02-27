@@ -1,6 +1,6 @@
 using DigTionary.Shared.Database.Entities;
 
-namespace DigTionary.Shared.Generators;
+namespace DigTionary.Shared.Application;
 
 internal interface IWordGenerator
 {

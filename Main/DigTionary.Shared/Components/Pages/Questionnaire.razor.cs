@@ -1,6 +1,6 @@
+using DigTionary.Shared.Application;
 using DigTionary.Shared.Components.Pages.Constants;
 using DigTionary.Shared.Database.Entities;
-using DigTionary.Shared.Generators;
 using DigTionary.Shared.Resources.Translations;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
@@ -71,7 +71,7 @@ public class QuestionnaireBase : ComponentBase
     {
         if (CzechPointer == (GeneratedCzechs.Count - 1))
         {
-            // The last generated Czech is currently displayed, generate and show a new one.
+            // The last retrieved Czech is currently displayed, retrieve and show a new one.
             // The Word of the Czech is certainly shown, otherwise, the button would be disabled.
             NextWordButtonDisabled = CssClasses.DISABLED;
             IsLastWordShown = false;
