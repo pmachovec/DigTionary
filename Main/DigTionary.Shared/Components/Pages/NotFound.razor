@@ -1,0 +1,10 @@
+@page "/not-found"
+
+@using DigTionary.Shared.Components.Layout
+@using DigTionary.Shared.Resources.Translations
+
+@inherits NotFoundBase
+@layout MainLayout
+
+<h3>@(Localizer[DigTionaryTranslations.NotFound]).</h3>
+<p>@(Localizer[DigTionaryTranslations.ContentDoesNotExist]).</p>

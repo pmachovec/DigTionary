@@ -1,0 +1,18 @@
+<Solution>
+  <Folder Name="/Main/">
+    <Project Path="Main/DigTionary.Shared/DigTionary.Shared.csproj" />
+    <Project Path="Main/DigTionary.TheApp/DigTionary.TheApp.csproj">
+      <Deploy />
+    </Project>
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="nuget.config" />
+  </Folder>
+  <Folder Name="/Test/">
+    <Project Path="Test/DigTionary.Shared.Test/DigTionary.Shared.Test.csproj" />
+  </Folder>
+</Solution>

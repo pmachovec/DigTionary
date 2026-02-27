@@ -1,0 +1,67 @@
+@using DigTionary.Shared.Components.Pages.Constants
+@using DigTionary.Shared.Resources.Translations
+@using Microsoft.AspNetCore.Components.Web
+
+@page "/"
+@inherits StartBase
+
+@*
+Extra bottom margin is necessary for phones that use virtual navigation buttons (which is typical).
+On such phones, buttos at the bottom of the screen can get partially covered by the navigation buttons.
+Do not put it to the main layout or index.html, it messes loading screens.
+*@
+<div class="mb-5 p-5">
+    <hr />
+
+    <div class="fw-bolder h3 pb-4 text-nowrap">
+        @Localizer[DigTionaryTranslations.ChaptersSelection]
+    </div>
+
+    <div class="container-fluid px-0 text-start">
+        <div class="row gx-4">
+            @foreach (var category in Categories)
+            {
+                <div class="col-auto pb-4">
+                    <div class="form-check form-switch form-switch-scalable py-3">
+                        <input
+                            id="@($"{IdsPartial.CATEGORY}{category.Id}")"
+                            class="form-check-input"
+                            type="checkbox"
+                            role="switch"
+                            checked="@IsCategorySelected(category.Id)"
+                            @onchange="(e => OnCategoryChange(e, category))">
+                        <label class="form-check-label fw-bolder h5" for="@($"{IdsPartial.CATEGORY}{category.Id}")">
+                            @category.Name
+                        </label>
+                    </div>
+
+                    @foreach (var lesson in category.Lessons)
+                    {
+                        <div class="form-check form-switch py-2">
+                            <input
+                                id="@($"{IdsPartial.LESSON}{lesson.Id}")"
+                                class="form-check-input"
+                                type="checkbox"
+                                role="switch"
+                                checked="@IsLessonSelected(lesson.Id)"
+                                @onchange="(e => OnLessonChange(e, lesson))">
+                            <label class="form-check-label" for="@($"{IdsPartial.LESSON}{lesson.Id}")">
+                                @lesson.Name
+                            </label>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="fw-bolder" id="start-button-div">
+        <button
+            class="border border-dark btn btn-primary btn-lg digtionary-button @StartButtonDisabled"
+            @onclick="Start">
+            @Localizer[DigTionaryTranslations.Start]
+        </button>
+    </div>
+</div>
