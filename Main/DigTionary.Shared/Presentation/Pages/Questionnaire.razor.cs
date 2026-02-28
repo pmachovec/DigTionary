@@ -1,11 +1,11 @@
 using DigTionary.Shared.Application;
-using DigTionary.Shared.Components.Pages.Constants;
 using DigTionary.Shared.Database.Entities;
+using DigTionary.Shared.Presentation.Constants;
 using DigTionary.Shared.Resources.Translations;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 
-namespace DigTionary.Shared.Components.Pages;
+namespace DigTionary.Shared.Presentation.Pages;
 
 public class QuestionnaireBase : ComponentBase
 {

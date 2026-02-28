@@ -1,4 +1,4 @@
-namespace DigTionary.Shared.Components.Pages.Constants;
+namespace DigTionary.Shared.Presentation.Constants;
 
 internal static class CssClasses
 {

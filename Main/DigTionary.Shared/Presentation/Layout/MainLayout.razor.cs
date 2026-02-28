@@ -2,9 +2,9 @@ using DigTionary.Shared.Resources.Translations;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 
-namespace DigTionary.Shared.Components.Pages;
+namespace DigTionary.Shared.Presentation.Layout;
 
-public class NotFoundBase : ComponentBase
+public class MainLayoutBase : LayoutComponentBase
 {
     [Inject]
     protected IStringLocalizer<DigTionaryTranslations> Localizer { get; set; } = default!;

@@ -1,6 +1,6 @@
 using DigTionary.Shared.Application;
-using DigTionary.Shared.Components.Pages;
 using DigTionary.Shared.Database;
+using DigTionary.Shared.Presentation.Pages;
 using DigTionary.Shared.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

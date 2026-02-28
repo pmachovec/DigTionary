@@ -1,4 +1,4 @@
-namespace DigTionary.Shared.Components.Pages;
+namespace DigTionary.Shared.Presentation.Pages;
 
 internal sealed class QuestionnaireParams
 {
