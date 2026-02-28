@@ -1,0 +1,11 @@
+@using DigTionary.Shared.Resources.Translations
+
+@inherits LoadingBase
+
+<div class="align-items-center d-flex justify-content-center min-vh-100">
+    <h3 class="fw-bold">
+        @* Do not use an HTML entity for three dots. It's slightly higher than letters and looks awful. *@
+        @($"{Localizer[DigTionaryTranslations.Loading]}...")
+    </h3>
+    @* Do not use a spinner here, it's laggy on Android. *@
+</div>

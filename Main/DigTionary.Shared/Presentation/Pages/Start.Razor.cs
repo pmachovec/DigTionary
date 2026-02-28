@@ -96,7 +96,7 @@ public class StartBase : ComponentBase
     protected void Start()
     {
         // Comparing categories lengths is enough to determine if all categories are selected.
-        QuestionnaireParams.SetUpCzechsTask = _selectedCategoriesIds.Count == Categories.Length
+        QuestionnaireParams.SetUpGeneratorTask = _selectedCategoriesIds.Count == Categories.Length
             ? CzechGenerator.SetUpCzechsAsync(CancellationToken.None)
             : CzechGenerator.SetUpCzechsAsync(_selectedLessonsIds, CancellationToken.None);
 

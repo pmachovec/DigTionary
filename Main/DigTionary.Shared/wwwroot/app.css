@@ -1,6 +1,8 @@
 /*
 Do not move this content to MainLayout.razor.css, although it may seem more appropriate place for CSS used only by shared Razor components.
-Various size styles don't work in that case.
+MainLayout is a razor component, and Blazor isolates component-related CSS strictly to corresponding components.
+I.e., styles defined in MainLayout.razor.css will not apply to components rendered inside MainLayout.
+It is possible to use the '::deep' selector, but that's kinda hacky.
 */
 
 a, .btn-link {
