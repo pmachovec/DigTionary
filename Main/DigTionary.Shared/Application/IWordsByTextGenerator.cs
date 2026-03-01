@@ -1,8 +1,8 @@
-using DigTionary.Shared.Database.Entities;
+using DigTionary.Shared.Domain;
 
 namespace DigTionary.Shared.Application;
 
-internal interface ICzechGenerator
+internal interface IWordsByTextGenerator
 {
     int Count { get; }
 
@@ -10,5 +10,5 @@ internal interface ICzechGenerator
 
     Task SetUpAsync(ISet<int> lessonsIds, CancellationToken cancellationToken);
 
-    Czech GetNext();
+    WordsByText GetNext();
 }

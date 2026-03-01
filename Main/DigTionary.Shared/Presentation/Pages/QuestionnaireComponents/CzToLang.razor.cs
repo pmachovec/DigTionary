@@ -35,14 +35,14 @@ public class CzToLangBase : ComponentBase
 
     protected int WordPointer { get; private set; }
 
-    protected override void OnInitialized() => GeneratedCzechs.Add(CzechGenerator.GetNextCzech());
+    protected override void OnInitialized() => GeneratedCzechs.Add(CzechGenerator.GetNext());
 
     protected void ShowWord()
     {
         IsLastWordShown = true;
         WordsShownCount++;
 
-        if (WordsShownCount < CzechGenerator.CzechsCount)
+        if (WordsShownCount < CzechGenerator.Count)
         {
             NextWordButtonDisabled = string.Empty;
         }
@@ -61,14 +61,14 @@ public class CzToLangBase : ComponentBase
             // The Word of the Czech is certainly shown, otherwise, the button would be disabled.
             NextWordButtonDisabled = CssClasses.DISABLED;
             IsLastWordShown = false;
-            GeneratedCzechs.Add(CzechGenerator.GetNextCzech());
+            GeneratedCzechs.Add(CzechGenerator.GetNext());
         }
         // else Just display the next generated Czech.
 
         PreviousWordButtonDisabled = string.Empty;
         CzechPointer++;
 
-        if ((CzechPointer == (GeneratedCzechs.Count - 1) && !IsLastWordShown) || CzechPointer == (CzechGenerator.CzechsCount - 1))
+        if ((CzechPointer == (GeneratedCzechs.Count - 1) && !IsLastWordShown) || CzechPointer == (CzechGenerator.Count - 1))
         {
             // The last generated Czech is currently displayed, disable the Next button.
             NextWordButtonDisabled = CssClasses.DISABLED;

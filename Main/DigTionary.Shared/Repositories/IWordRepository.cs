@@ -4,7 +4,7 @@ namespace DigTionary.Shared.Repositories;
 
 internal interface IWordRepository
 {
-    Task<Word[]> GetWordsWithCzechsAsync(CancellationToken cancellationToken);
+    Task<IDictionary<string, IEnumerable<Word>>> GetWordsWithCzechsByTextAsync(CancellationToken cancellationToken);
 
-    Task<Word[]> GetWordsWithCzechsAsync(ISet<int> lessonsIds, CancellationToken cancellationToken);
+    Task<IDictionary<string, IEnumerable<Word>>> GetWordsWithCzechsByTextAsync(ISet<int> lessonsIds, CancellationToken cancellationToken);
 }

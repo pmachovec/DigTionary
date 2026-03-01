@@ -6,27 +6,39 @@ namespace DigTionary.Shared.Repositories;
 
 internal sealed class WordRepository(DigTionaryDbContext _digTionaryDbContext) : IWordRepository
 {
-    public async Task<Word[]> GetWordsWithCzechsAsync(CancellationToken cancellationToken)
+    public async Task<IDictionary<string, IEnumerable<Word>>> GetWordsWithCzechsByTextAsync(CancellationToken cancellationToken)
     {
         if (!_digTionaryDbContext.Words.Any())
         {
             throw new InvalidDataException("No main language words available in the database!");
         }
 
-        return await _digTionaryDbContext.Words
+        // The grouping to dictionary can't be done in one LINQ query.
+        // You must first retrieve words and then group them in another step.
+        // Otherwise, you will get an error about client evaluation of the grouping during runtime.
+        var wordsWithCzechs = await _digTionaryDbContext.Words
             .Include(word => word.Czechs)
             .ToArrayAsync(cancellationToken);
+
+        return wordsWithCzechs
+            .GroupBy(word => word.Text)
+            .ToDictionary(grouping => grouping.Key, grouping => grouping.AsEnumerable());
     }
 
-    public async Task<Word[]> GetWordsWithCzechsAsync(ISet<int> lessonsIds, CancellationToken cancellationToken){
+    public async Task<IDictionary<string, IEnumerable<Word>>> GetWordsWithCzechsByTextAsync(ISet<int> lessonsIds, CancellationToken cancellationToken)
+    {
         if (!_digTionaryDbContext.Words.Any())
         {
             throw new InvalidDataException("No main language words available in the database!");
         }
 
-        return await _digTionaryDbContext.Words
+        var wordsWithCzechs = await _digTionaryDbContext.Words
             .Where(word => lessonsIds.Contains(word.LessonId))
             .Include(word => word.Czechs)
             .ToArrayAsync(cancellationToken);
+
+        return wordsWithCzechs
+            .GroupBy(word => word.Text)
+            .ToDictionary(grouping => grouping.Key, grouping => grouping.AsEnumerable());
     }
 }
