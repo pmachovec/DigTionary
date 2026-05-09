@@ -17,7 +17,7 @@ public class CzToLangBase : ComponentBase
 
     protected int CzechPointer;
 
-    protected string ActualText => GeneratedCzechs[CzechPointer].Text;
+    protected string ActualCzechText => GeneratedCzechs[CzechPointer].Text;
 
     protected ICollection<Word> ActualWords => GeneratedCzechs[CzechPointer].Words;
 

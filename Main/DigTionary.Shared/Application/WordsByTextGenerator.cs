@@ -8,5 +8,5 @@ internal sealed class WordsByTextGenerator
     private int _pointer;
 
     public int Count =>
-        _wordsByTexts?.Length ?? throw new InvalidOperationException("Words no set up!");
+        _wordsByTexts?.Length ?? throw new InvalidOperationException("Words not set up!");
 }
