@@ -1,18 +1,17 @@
 /*
 Using the '::deep' selector so that defined styles are available even in child components.
-Child components must be enclosed in the root element with the 'questionnaire-root' class.
 */
-.questionnaire-root ::deep .button-div {
+::deep .button-div {
     cursor: pointer;
     height: 90px;
 }
 
 /* Keep a fixed size regardless of viewport width. */
-.questionnaire-root ::deep .h1-fixed {
+::deep .h1-fixed {
     font-size: 2.5rem !important;
 }
 
-.questionnaire-root ::deep .word-div {
+::deep .word-div {
     align-content: center;
     align-items: center;
     display: flex;
