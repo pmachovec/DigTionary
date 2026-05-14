@@ -70,6 +70,15 @@ namespace DigTionary.Shared.Resources.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configuration.
+        /// </summary>
+        public static string Configuration {
+            get {
+                return ResourceManager.GetString("Configuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The content you are looking for does not exist.
         /// </summary>
         public static string ContentDoesNotExist {
@@ -93,6 +102,15 @@ namespace DigTionary.Shared.Resources.Translations {
         public static string Loading {
             get {
                 return ResourceManager.GetString("Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mode.
+        /// </summary>
+        public static string Mode {
+            get {
+                return ResourceManager.GetString("Mode", resourceCulture);
             }
         }
         

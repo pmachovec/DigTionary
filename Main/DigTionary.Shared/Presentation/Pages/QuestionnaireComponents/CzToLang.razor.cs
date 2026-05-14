@@ -9,6 +9,8 @@ namespace DigTionary.Shared.Presentation.Pages.QuestionnaireComponents;
 
 public class CzToLangBase : ComponentBase
 {
+    protected const string NAVIGATION_BUTTON_CLASSES = "border border-dark btn btn-lg btn-primary col-auto digtionary-button mb-2 me-2";
+
     [Inject]
     protected IStringLocalizer<DigTionaryTranslations> Localizer { get; set; } = default!;
 

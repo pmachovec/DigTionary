@@ -10,6 +10,8 @@ namespace DigTionary.Shared.Presentation.Pages;
 
 public class StartBase : ComponentBase
 {
+    protected const string FLAG_BUTTON_CLASSES = "align-items-center border border-dark btn d-inline-flex digtionary-button gap-2 rounded text-nowrap";
+
     private HashSet<int> _selectedCategoriesIds = default!;
     private HashSet<int> _selectedLessonsIds = default!;
 
@@ -30,6 +32,10 @@ public class StartBase : ComponentBase
 
     protected Category[] Categories { get; private set; } = default!;
 
+    protected string CzToLangButtonPrimary { get; set; } = CssClasses.BTN_PRIMARY;
+
+    protected string LangToCzButtonPrimary { get; set; } = string.Empty;
+
     protected string StartButtonDisabled { get; private set; } = string.Empty;
 
     protected override async Task OnInitializedAsync()
@@ -44,6 +50,20 @@ public class StartBase : ComponentBase
         _selectedCategoriesIds = [];
         _selectedLessonsIds = [];
         DisableStartButtonWhenNoLessonsSelected();
+    }
+
+    protected void ToggleCzToLang()
+    {
+        QuestionnaireParams.CzToLang = true;
+        CzToLangButtonPrimary = CssClasses.BTN_PRIMARY;
+        LangToCzButtonPrimary = string.Empty;
+    }
+
+    protected void ToggleLangToCz()
+    {
+        QuestionnaireParams.CzToLang = false;
+        CzToLangButtonPrimary = string.Empty;
+        LangToCzButtonPrimary = CssClasses.BTN_PRIMARY;
     }
 
     protected bool IsCategorySelected(int categoryId) => _selectedCategoriesIds.Contains(categoryId);

@@ -1,4 +1,5 @@
 @using DigTionary.Shared.Presentation.Constants
+@using DigTionary.Shared.Presentation.Pages.StartComponents
 @using DigTionary.Shared.Resources.Translations
 @using Microsoft.AspNetCore.Components.Web
 
@@ -14,14 +15,39 @@ Do not put it to the main layout or index.html, it messes loading screens.
     <hr />
 
     <div class="fw-bolder h3 px-1 py-3 text-nowrap">
+        @Localizer[DigTionaryTranslations.Configuration]
+    </div>
+
+    <div class="fw-bolder h5 pt-3 px-1 text-nowrap">
+        @Localizer[DigTionaryTranslations.Mode]
+    </div>
+
+    <div class="d-inline-flex gap-3 pb-3">
+        <button
+            class="@FLAG_BUTTON_CLASSES @CzToLangButtonPrimary"
+            @onclick="ToggleCzToLang">
+            <FlagCz />
+            <span class="lead">&#x2794;</span> @* Right arrow *@
+            <FlagDe />
+        </button>
+        <button
+            class="@FLAG_BUTTON_CLASSES @LangToCzButtonPrimary"
+            @onclick="ToggleLangToCz">
+            <FlagDe />
+            <span class="lead">&#x2794;</span> @* Right arrow *@
+            <FlagCz />
+        </button>
+    </div>
+
+    <div class="fw-bolder h5 pt-5 px-1 text-nowrap">
         @Localizer[DigTionaryTranslations.ChaptersSelection]
     </div>
 
-    <div class="container-fluid px-0 text-start">
+    <div class="container-fluid pb-3 px-0 text-start">
         <div class="row gx-4">
             @foreach (var category in Categories)
             {
-                <div class="col-auto pb-4">
+                <div class="col-auto">
                     <div class="form-check form-switch form-switch-scalable py-3">
                         <input
                             id="@($"{IdsPartial.CATEGORY}{category.Id}")"
@@ -30,7 +56,7 @@ Do not put it to the main layout or index.html, it messes loading screens.
                             role="switch"
                             checked="@IsCategorySelected(category.Id)"
                             @onchange="(e => OnCategoryChange(e, category))">
-                        <label class="form-check-label fw-bolder h5" for="@($"{IdsPartial.CATEGORY}{category.Id}")">
+                        <label class="form-check-label fw-bolder h6" for="@($"{IdsPartial.CATEGORY}{category.Id}")">
                             @category.Name
                         </label>
                     </div>

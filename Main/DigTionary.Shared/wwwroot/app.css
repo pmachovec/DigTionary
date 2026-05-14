@@ -29,7 +29,8 @@ html, body {
 }*/
 
 .digtionary-button {
-    min-width: 125px;
+    min-height: 50px;
+    min-width: 130px;
     white-space: nowrap;
 }
 

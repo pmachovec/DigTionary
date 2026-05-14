@@ -64,13 +64,13 @@
 
     <div class="mt-5">
         <button
-            class="border border-dark btn btn-lg btn-primary col-auto digtionary-button mb-2 me-2 @PreviousWordButtonDisabled"
+            class="@NAVIGATION_BUTTON_CLASSES @PreviousWordButtonDisabled"
             @onclick="async () => await ClickPreviousWordButtonAsync()">
             @Localizer[DigTionaryTranslations.Previous]
         </button>
 
         <button
-            class="border border-dark btn btn-lg btn-primary col-auto digtionary-button mb-2 me-2 @NextWordButtonDisabled"
+            class="@NAVIGATION_BUTTON_CLASSES @NextWordButtonDisabled"
             @onclick="async () => await ClickNextWordButtonAsync()">
             @Localizer[DigTionaryTranslations.Next]
         </button>
@@ -96,7 +96,7 @@
         Applying the class causes setting the background to darker gray instead of the desired light gray.
         The NavLinkMatch.All ensures that the class would be applied only if the current route exactly matched the href value.
         *@
-        <NavLink class="border border-dark btn btn-light btn-lg digtionary-button" href="" Match="NavLinkMatch.All">
+        <NavLink class="border border-dark btn btn-light btn-lg btn-primary digtionary-button" href="" Match="NavLinkMatch.All">
             @Localizer[DigTionaryTranslations.Restart]
         </NavLink>
     </div>
