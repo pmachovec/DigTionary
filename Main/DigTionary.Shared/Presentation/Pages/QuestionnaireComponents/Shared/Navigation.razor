@@ -1,0 +1,22 @@
+@using DigTionary.Shared.Resources.Translations
+@using Microsoft.AspNetCore.Components.Web
+
+@inherits NavigationBase
+
+<div class="mt-5">
+    <button
+        class="@NAVIGATION_BUTTON_CLASSES @PreviousWordButtonDisabled"
+        @onclick="ClickPreviousWordButton">
+        @Localizer[DigTionaryTranslations.Previous]
+    </button>
+
+    <button
+        class="@NAVIGATION_BUTTON_CLASSES @NextWordButtonDisabled"
+        @onclick="ClickNextWordButton">
+        @Localizer[DigTionaryTranslations.Next]
+    </button>
+
+    <span class="align-middle col-auto fw-bold h1-fixed mb-0 mx-0 text-primary">
+        @Done
+    </span>
+</div>

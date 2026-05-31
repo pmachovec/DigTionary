@@ -16,7 +16,7 @@
     {
         foreach (var actualWord in ActualWords)
         {
-            <div class="border border-dark mb-3 p-0 rounded">
+            <div class="border border-dark mb-3 rounded">
                 <div class="p-3 word-div">
                     <span class="fw-bolder">
                         @($"{actualWord.Article ?? string.Empty} {actualWord.Text}".Trim())
@@ -38,12 +38,19 @@
     }
     else
     {
-        <div
-            class="border border-dark button-div d-inline-block p-3 rounded"
-            @onclick="ShowWord">
-            <Sheet />
+        <div class="border border-dark d-inline-block rounded">
+            <div
+                class="button-div p-3"
+                @onclick="ShowWord">
+                <Sheet />
+            </div>
         </div>
     }
+
+    <Navigation
+        @ref="Navigation"
+        ClickPreviousWordButton="ClickPreviousWordButton"
+        ClickNextWordButton="ClickNextWordButton" />
 
     <Restart />
 </div>

@@ -2,6 +2,7 @@ using DigTionary.Shared.Application;
 using DigTionary.Shared.Database.Entities;
 using DigTionary.Shared.Domain;
 using DigTionary.Shared.Presentation.Constants;
+using DigTionary.Shared.Presentation.Pages.QuestionnaireComponents.Shared;
 using DigTionary.Shared.Resources.Translations;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
@@ -30,7 +31,7 @@ public class LangToCzBase : ComponentBase
 
     protected bool IsLastWordShown { get; private set; }
 
-    protected string NextWordButtonDisabled { get; private set; } = CssClasses.DISABLED;
+    public Navigation Navigation { get; protected set; } = default!;
 
     protected override void OnInitialized() => GeneratedWordsByText.Add(WordsByTextGenerator.GetNext());
 
@@ -41,12 +42,46 @@ public class LangToCzBase : ComponentBase
 
         if (WordsShownCount < WordsByTextGenerator.Count)
         {
-            NextWordButtonDisabled = string.Empty;
+            Navigation.NextWordButtonDisabled = string.Empty;
         }
         else
         {
-            NextWordButtonDisabled = CssClasses.DISABLED;
-            Done = Localizer[DigTionaryTranslations.Done];
+            Navigation.NextWordButtonDisabled = CssClasses.DISABLED;
+            Navigation.SetDone();
+        }
+    }
+
+    protected void ClickNextWordButton()
+    {
+        if (WordPointer == (GeneratedWordsByText.Count - 1))
+        {
+            // The last retrieved text is currently displayed, retrieve and show a new one.
+            // The text is certainly shown, otherwise, the button would be disabled.
+            Navigation.NextWordButtonDisabled = CssClasses.DISABLED;
+            IsLastWordShown = false;
+            GeneratedWordsByText.Add(WordsByTextGenerator.GetNext());
+        }
+        // else Just display the next generated text.
+
+        Navigation.PreviousWordButtonDisabled = string.Empty;
+        WordPointer++;
+
+        if ((WordPointer == (GeneratedWordsByText.Count - 1) && !IsLastWordShown) || WordPointer == (WordsByTextGenerator.Count - 1))
+        {
+            // The last generated text is currently displayed, disable the Next button.
+            Navigation.NextWordButtonDisabled = CssClasses.DISABLED;
+        }
+    }
+
+    protected void ClickPreviousWordButton()
+    {
+        Navigation.NextWordButtonDisabled = string.Empty;
+        WordPointer--;
+
+        if (WordPointer == 0)
+        {
+            // The first generated text is currently displayed, disable the Previous button.
+            Navigation.PreviousWordButtonDisabled = CssClasses.DISABLED;
         }
     }
 }

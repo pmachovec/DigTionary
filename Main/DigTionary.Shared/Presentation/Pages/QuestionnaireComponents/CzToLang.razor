@@ -17,50 +17,41 @@
     {
         foreach (var actualWord in ActualWords)
         {
-            <div class="border border-dark mb-3 p-3 rounded word-div">
-                <span class="fw-bolder">
-                    @($"{actualWord.Article ?? string.Empty} {actualWord.Text}".Trim())
-                </span>
-
-                @if (actualWord.Notes is string notes)
-                {
-                    <span>
-                        @($"({notes})")
+            <div class="border border-dark mb-3 rounded">
+                <div class="p-3 word-div">
+                    <span class="fw-bolder">
+                        @($"{actualWord.Article ?? string.Empty} {actualWord.Text}".Trim())
                     </span>
-                }
 
-                <span>
-                    @($"[{actualWord.Ipa}]")
-                </span>
+                    @if (actualWord.Notes is string notes)
+                    {
+                        <span>
+                            @($"({notes})")
+                        </span>
+                    }
+
+                    <span>
+                        @($"[{actualWord.Ipa}]")
+                    </span>
+                </div>
             </div>
         }
     }
     else
     {
-        <div
-            class="border border-dark button-div d-inline-block p-3 rounded"
-            @onclick="ShowWord">
-            <Sheet />
+        <div class="border border-dark d-inline-block rounded">
+            <div
+                class="button-div p-3"
+                @onclick="ShowWord">
+                <Sheet />
+            </div>
         </div>
     }
 
-    <div class="mt-5">
-        <button
-            class="@NAVIGATION_BUTTON_CLASSES @PreviousWordButtonDisabled"
-            @onclick="async () => await ClickPreviousWordButtonAsync()">
-            @Localizer[DigTionaryTranslations.Previous]
-        </button>
-
-        <button
-            class="@NAVIGATION_BUTTON_CLASSES @NextWordButtonDisabled"
-            @onclick="async () => await ClickNextWordButtonAsync()">
-            @Localizer[DigTionaryTranslations.Next]
-        </button>
-
-        <span class="align-middle col-auto fw-bold h1-fixed mb-0 mx-0 text-primary">
-            @Done
-        </span>
-    </div>
+    <Navigation
+        @ref="Navigation"
+        ClickPreviousWordButton="ClickPreviousWordButton"
+        ClickNextWordButton="ClickNextWordButton" />
 
     <div class="fw-bolder pt-4">
         <table class="table table-borderless w-auto">
