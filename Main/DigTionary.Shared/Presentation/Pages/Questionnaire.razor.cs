@@ -5,7 +5,7 @@ namespace DigTionary.Shared.Presentation.Pages;
 public class QuestionnaireBase : ComponentBase
 {
     [Inject]
-    private QuestionnaireParams QuestionnaireParams { get; set; } = default!;
+    protected QuestionnaireParams QuestionnaireParams { get; set; } = default!;
 
     protected bool IsLoading { get; private set; } = true;
 

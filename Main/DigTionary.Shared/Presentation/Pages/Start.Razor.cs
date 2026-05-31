@@ -22,6 +22,9 @@ public class StartBase : ComponentBase
     private ICzechGenerator CzechGenerator { get; set; } = default!;
 
     [Inject]
+    private IWordsByTextGenerator WordsByTextGenerator { get; set; } = default!;
+
+    [Inject]
     protected IStringLocalizer<DigTionaryTranslations> Localizer { get; set; } = default!;
 
     [Inject]
@@ -40,6 +43,7 @@ public class StartBase : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
+        QuestionnaireParams.Reset();
         Categories = [.. await CategoryRepository.GetCategoriesWithLessonsAsync(CancellationToken.None)];
 
         if (Categories.Length == 0)
@@ -117,12 +121,22 @@ public class StartBase : ComponentBase
     {
         // Comparing categories lengths is enough to determine if all categories are selected.
         QuestionnaireParams.SetUpGeneratorTask = _selectedCategoriesIds.Count == Categories.Length
-            ? CzechGenerator.SetUpAsync(CancellationToken.None)
-            : CzechGenerator.SetUpAsync(_selectedLessonsIds, CancellationToken.None);
+            ? GetGeneratorTask(CancellationToken.None)
+            : GetGeneratorTask(_selectedLessonsIds, CancellationToken.None);
 
         NavigationManager.NavigateTo("/questionnaire");
     }
 
     private void DisableStartButtonWhenNoLessonsSelected() =>
         StartButtonDisabled = _selectedLessonsIds.Count == 0 ? CssClasses.DISABLED : string.Empty;
+
+    private Task GetGeneratorTask(CancellationToken cancellationToken) =>
+        QuestionnaireParams.CzToLang
+            ? CzechGenerator.SetUpAsync(cancellationToken)
+            : WordsByTextGenerator.SetUpAsync(cancellationToken);
+
+    private Task GetGeneratorTask(ISet<int> lessonsIds, CancellationToken cancellationToken) =>
+        QuestionnaireParams.CzToLang
+            ? CzechGenerator.SetUpAsync(lessonsIds, cancellationToken)
+            : WordsByTextGenerator.SetUpAsync(lessonsIds, cancellationToken);
 }

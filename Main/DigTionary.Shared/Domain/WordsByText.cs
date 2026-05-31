@@ -2,7 +2,7 @@ using DigTionary.Shared.Database.Entities;
 
 namespace DigTionary.Shared.Domain;
 
-internal sealed class WordsByText(string text, IEnumerable<Word> words)
+public sealed class WordsByText(string text, IEnumerable<Word> words)
 {
     public string Text { get; } = text;
 

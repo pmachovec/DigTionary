@@ -16,5 +16,7 @@ public static class ServiceCollectionExtensions
             .AddScoped<ICategoryRepository, CategoryRepository>()
             .AddScoped<ICzechRepository, CzechRepository>()
             .AddScoped<ICzechGenerator, CzechGenerator>()
+            .AddScoped<IWordRepository, WordRepository>()
+            .AddScoped<IWordsByTextGenerator, WordsByTextGenerator>()
             .AddScoped<QuestionnaireParams>();
 }
