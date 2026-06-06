@@ -52,8 +52,8 @@ internal sealed class CzechGenerator(ICzechRepository _czechRepository) : ICzech
             throw new InvalidOperationException("No previous Czech words available!");
         }
 
-        // Get random index of the remaining part of the czechs array and then decrement the counter.
-        // This is correct, '_czechCounter--' returns the initial value before the decrement.
+        // Get random index of the remaining part of the czechs array and then decrement the pointer.
+        // This is correct, '_pointer--' returns the initial value before the decrement.
         var randomIndex = Random.Shared.Next(_pointer--);
 
         // Get the czech at the random index position.

@@ -16,8 +16,8 @@
     {
         foreach (var actualWord in ActualWords)
         {
-            <div class="border border-dark mb-3 rounded">
-                <div class="p-3 word-div">
+            <div class="mb-3 p-3 rounded word-div-outer">
+                <div class="word-div-inner">
                     <span class="fw-bolder">
                         @($"{actualWord.Article ?? string.Empty} {actualWord.Text}".Trim())
                     </span>
@@ -33,17 +33,24 @@
                         @($"[{actualWord.Ipa}]")
                     </span>
                 </div>
+                <div>
+                    <ul class="px-3 m-0">
+                        @foreach (var czech in actualWord.Czechs)
+                        {
+                            <li>
+                                @czech.Text
+                            </li>
+                        }
+                    </ul>
+                </div>
             </div>
         }
     }
     else
     {
-        <div class="border border-dark d-inline-block rounded">
-            <div
-                class="button-div p-3"
-                @onclick="ShowWord">
-                <Sheet />
-            </div>
+        <div class="border border-dark button-div d-inline-block p-3 rounded"
+            @onclick="ShowWord">
+            <Sheet />
         </div>
     }
 

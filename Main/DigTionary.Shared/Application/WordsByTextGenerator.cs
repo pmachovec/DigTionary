@@ -52,8 +52,8 @@ internal sealed class WordsByTextGenerator(IWordRepository _wordRepository) : IW
             throw new InvalidOperationException("No previous words available!");
         }
 
-        // Get random index of the remaining part of the words array and then decrement the counter.
-        // This is correct, '_wordCounter--' returns the initial value before the decrement.
+        // Get random index of the remaining part of the words array and then decrement the pointer.
+        // This is correct, '_pointer--' returns the initial value before the decrement.
         var randomIndex = Random.Shared.Next(_pointer--);
 
         // Get the word at the random index position.
